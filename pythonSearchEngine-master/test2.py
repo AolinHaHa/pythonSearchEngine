@@ -5,7 +5,7 @@ import sys
 imp.reload(sys)
 import pandas as pd
 
-# Load csv
+# Load csv save as df
 df = pd.read_csv("testexcel.csv") 
 
 #print(df.get("artist.name"))

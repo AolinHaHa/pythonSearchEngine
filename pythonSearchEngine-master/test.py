@@ -1,7 +1,7 @@
 import imp
 import sys
 imp.reload(sys)
-f = open("testdata.txt","r")
+f = open("56583-0.txt","r")
 print (f)
 word_list = []
 filtered_words = []
