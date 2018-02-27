@@ -8,6 +8,8 @@ import pandas as pd
 # Load csv
 df = pd.read_csv("testexcel.csv") 
 
+tf = 0
+idf = 0
 #print(df.get("artist.name"))
 
 
@@ -17,15 +19,10 @@ def getArtistNameByIndex (idx):
 	return df.at[idx,"artist.name"]
 
 
-def getArtistNameByIndex2 (idx):
-	print ("get '{}' at index {}".format(df.sort_values(by=["artist.name"]).at[idx,"artist.name"], idx))
-	return df.at[idx,"artist.name"]
-
-
 #sort by column name
 def sort_by (ColName):
 	print("sorted by {}".format(ColName))
-	return df.sort_values(by=[ColName])
+	return df.sort_values("artist.name", ascending=True)
 
 
 def getRecordByArtistName (artistName):
@@ -39,25 +36,29 @@ def searching (line, target):
 			print ("found "+ target)
 			return True	
 
-def runcode ():
+
+def tfidf ():
+	global tf
 	count = 0
-	found = 0
 	for line in f.readlines():
 		searching (line, "was")
 		if searching (line, "was") == True:
-			found += 1
+			TF += 1
 		for word in line:
 			count += 1
 	print ("searching {} words".format(count))
-	print ("found target {} times".format(found))
+	print ("found target {} times".format(TF))
+
 
 def testRun():
 	print(df.at[0,"artist.name"])
-	#getArtistNameByIndex(0)
 	#print(sort_by("artist.name"))
-	#print(sort_by("artist.name").at[0,"artist.name"])
-	getArtistNameByIndex2(0)
-	#print(sort_by("artist.name").at[0,"artist.name"])
+	#getArtistNameByIndex(0)
+	#print(df.sort_values("artist.name", ascending=True))
+	# print (df.sort_values("artist.name", ascending=True))
+	# print (sort_by("artist.name").at[0,"artist.name"])
+	# tfidf()
+	print (tf)
 	
 
 
