@@ -10,6 +10,7 @@ df = pd.read_csv("testexcel.csv")
 
 tf = 0
 idf = 0
+totalCol = df.shape[0]
 #print(df.get("artist.name"))
 
 
@@ -37,32 +38,47 @@ def searching (line, target):
 			return True	
 
 
-def tfidf ():
+def tfidf (term):
 	global tf
 	count = 0
-	for line in f.readlines():
-		searching (line, "was")
-		if searching (line, "was") == True:
-			TF += 1
-		for word in line:
-			count += 1
+	df.loc[df['title'] == term]
+	# for line in f.readlines():
+	# 	searching (line, "was")
+	# 	if searching (line, "was") == True:
+	# 		TF += 1
+	# 	for word in line:
+	# 		count += 1
 	print ("searching {} words".format(count))
 	print ("found target {} times".format(TF))
 
+def GroupArtistMbtags():
+	lst = []
+	print(df.groupby('artist_mbtags_count').artist_mbtags_count.count())
+	xx = df.groupby('key').key.count()
+	for item in xx:
+		lst.append(item)
+	print (lst)
+	
+
+
+def PrintArtistCount():
+	print(df['artist.name'].value_counts())
 
 def testRun():
+	global totalCol
 	print(df.at[0,"artist.name"])
-	#print(sort_by("artist.name"))
-	#getArtistNameByIndex(0)
-	#print(df.sort_values("artist.name", ascending=True))
-	# print (df.sort_values("artist.name", ascending=True))
-	# print (sort_by("artist.name").at[0,"artist.name"])
-	# tfidf()
 	print (tf)
 	##########
-	
+	#print(df.loc[df['title'] == 'Relax'])
+	#PrintArtistCount()
+	print(totalCol)
+	GroupArtistMbtags()
+	a = sorted ("artist.name")
+	# print(a.at[0,"artist.name"])
+
+
+
 
 
 testRun()
 
-#runcode()
