@@ -4,21 +4,49 @@ import imp
 import sys
 imp.reload(sys)
 import pandas as pd
+import numpy as np
 
 # Load csv
-df = pd.read_csv("testexcel.csv") 
 
+df = pd.read_csv("testexcel.csv") 
+f = open("testexcel.csv","r")
 tf = 0
 idf = 0
 totalCol = df.shape[0]
-#print(df.get("artist.name"))
+allRec = []
+# 	singleRec.append(ii)
+# allRec.append(singleRec)
+
+# def getallRec():
+# 	global allRec
+	# singleRec = []
+for i in f:
+	for ii in i.split(','):
+		allRec.append(ii)
+# return allRec
+temp = []
+for idx in range(len(allRec)):
+	temp.append(allRec[idx])
+	idx +=34
+	
+print(temp)
+
+
+def getAName(lst):
+	temp = []
+	for idx in range(len(lst)):
+		temp.append(lst[idx])
+		idx +=34
+# 	return temp
+# print(getAName(allRec))
+
+
 
 
 #get artist name
 def getArtistNameByIndex (idx):
 	print ("get '{}' at index {}".format(df.at[idx,"artist.name"], idx))
 	return df.at[idx,"artist.name"]
-
 
 #sort by column name
 def sort_by (ColName):
@@ -36,7 +64,8 @@ def searching (line, target):
 		if word == target:
 			print ("found "+ target)
 			return True	
-
+def countTerm(term):
+	return
 
 def tfidf (term):
 	global tf
@@ -58,7 +87,7 @@ def GroupArtistMbtags():
 	for item in xx:
 		lst.append(item)
 	print (lst)
-	
+
 
 
 def PrintArtistCount():
@@ -72,13 +101,13 @@ def testRun():
 	#print(df.loc[df['title'] == 'Relax'])
 	#PrintArtistCount()
 	print(totalCol)
-	GroupArtistMbtags()
+	# GroupArtistMbtags()
 	a = sorted ("artist.name")
 	# print(a.at[0,"artist.name"])
 
 
 
 
-
-testRun()
-
+#testRun()
+# for i in df:
+# 	for ii in i.split(' ')
