@@ -1,10 +1,17 @@
 #! -*- coding:utf-8 -*-
 import sys
-import tkinter as tk
+
+try:
+    # for Python2
+    import Tkinter as tk  ## notice capitalized T in Tkinter
+except ImportError:
+    # for Python3
+    import tkinter as tk  ## notice lowercase 't' in tkinter here
 import pandas as pd
 import imp
+
 imp.reload(sys)
-import numpy as np
+
 # Load csv
 df = pd.read_csv("testexcel.csv")
 f = open("testexcel.csv", "r")
@@ -12,7 +19,6 @@ tf = 0
 idf = 0
 totalCol = df.shape[0]
 allRec = []
-
 
 
 def getAName(lst):
@@ -116,6 +122,38 @@ def removeQueryStopwords(query):  # remove the stop words
     return filteredQuery
 
 
+class User(object):
+
+    def __init__(self,user_id):
+      if user_id == -1
+          self.new_user = True
+      else:
+          self.new_user = False
+
+          #fetch all records from db about user_id
+          self._populateUser()
+
+    def commit(self):
+        if self.new_user:
+            #Do INSERTs
+        else:
+            #Do UPDATEs
+
+    def delete(self):
+        if self.new_user == False:
+            return False
+
+        #Delete user code here
+
+    def _populate(self):
+        #Query self.user_id from database and
+        #set all instance variables, e.g.
+        #self.name = row['name']
+
+    def getFullName(self):
+        return self.name
+
+
 
 class Window(tk.Frame):
     def __init__(self, parent):
@@ -125,14 +163,13 @@ class Window(tk.Frame):
         # and a button to do the computation
         self.prompt = tk.Label(self, text="Search Query:", anchor="w")
         self.entry = tk.Entry(self)
-        self.submit = tk.Button(self, text="Search Query", command = self.searchButton)
+        self.submit = tk.Button(self, text="Search Query", command=self.searchButton)
         self.output = tk.Label(self, text="Def Label")
 
         self.artistName = tk.Label(self, text="Search artist name:", anchor="w")
         self.artistEntry = tk.Entry(self)
-        self.artistSubmit = tk.Button(self, text="Search Artist", command = self.searchArtistButton)
+        self.artistSubmit = tk.Button(self, text="Search Artist", command=self.searchArtistButton)
         self.artistOutput = tk.Label(self, text="Def Label")
-
 
         # lay the widgets out on the screen.
         self.prompt.pack(side="top", fill="x")
@@ -178,4 +215,5 @@ if __name__ == "__main__":
     testRun()
     root = tk.Tk()
     Window(root).pack(fill="both", expand=True)
-    root.mainloop()
+    # uncommon below to run the window
+    # root.mainloop()
