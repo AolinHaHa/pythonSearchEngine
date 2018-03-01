@@ -12,42 +12,6 @@ tf = 0
 idf = 0
 totalCol = df.shape[0]
 allRec = []
-class Window(tk.Frame):
-    def __init__(self, parent):
-        tk.Frame.__init__(self, parent)
-
-        # create a prompt, an input box, an output label,
-        # and a button to do the computation
-        self.prompt = tk.Label(self, text="Search Query:", anchor="w")
-        self.entry = tk.Entry(self)
-        self.submit = tk.Button(self, text="Search", command = self.searchButton)
-        self.output = tk.Label(self, text="Def Label")
-
-        # lay the widgets out on the screen.
-        self.prompt.pack(side="top", fill="x")
-        self.entry.pack(side="top", fill="x", padx=200)
-        self.output.pack(side="top", fill="x", expand=True)
-        self.submit.pack(side="right")
-
-    def searchButton(self):
-        # get the value from the input widget, convert
-        # it to an int, and do a calculation
-        try:
-            i = str(self.entry.get())
-            result = "Your query is: %s \n Filtered query is: %s" % (i, removeQueryStopwords(i))
-        except ValueError:
-            result = "Please enter string only"
-
-        # set the output widget to have our result
-        self.output.configure(text=result)
-
-
-
-# if this is run as a program (versus being imported),
-# create a root window and an instance of our example,
-# then start the event loop
-
-
 
 
 
@@ -151,10 +115,67 @@ def removeQueryStopwords(query):  # remove the stop words
     # print(filteredQuery)
     return filteredQuery
 
-# print(removeQueryStopwords("123123213123"))
 
+
+class Window(tk.Frame):
+    def __init__(self, parent):
+        tk.Frame.__init__(self, parent)
+
+        # create a prompt, an input box, an output label,
+        # and a button to do the computation
+        self.prompt = tk.Label(self, text="Search Query:", anchor="w")
+        self.entry = tk.Entry(self)
+        self.submit = tk.Button(self, text="Search Query", command = self.searchButton)
+        self.output = tk.Label(self, text="Def Label")
+
+        self.artistName = tk.Label(self, text="Search artist name:", anchor="w")
+        self.artistEntry = tk.Entry(self)
+        self.artistSubmit = tk.Button(self, text="Search Artist", command = self.searchArtistButton)
+        self.artistOutput = tk.Label(self, text="Def Label")
+
+
+        # lay the widgets out on the screen.
+        self.prompt.pack(side="top", fill="x")
+        self.entry.pack(side="top", fill="x", padx=200)
+        self.output.pack(side="top", fill="x", expand=True)
+        self.submit.pack(side="right")
+
+        self.artistName.pack(side="top", fill="x")
+        self.artistEntry.pack(side="top", fill="x", padx=300)
+        self.artistOutput.pack(side="top", fill="x", padx=300, expand=True)
+        self.artistSubmit.pack(side="right")
+
+    def searchArtistButton(self):
+        # get the value from the input widget, convert
+        # it to an int, and do a calculation
+        try:
+            i = str(self.artistEntry.get())
+            result = "Your query is: %s \n TF: %s" % (i, getArtistTF(i))
+        except ValueError:
+            result = "Please enter string only"
+
+        # set the output widget to have our result
+        self.artistOutput.configure(text=result)
+
+    def searchButton(self):
+        # get the value from the input widget, convert
+        # it to an int, and do a calculation
+        try:
+            i = str(self.entry.get())
+            result = "Your query is: %s \n Filtered query is: %s" % (i, removeQueryStopwords(i))
+        except ValueError:
+            result = "Please enter string only"
+
+        # set the output widget to have our result
+        self.output.configure(text=result)
+
+
+# if this is run as a program (versus being imported),
+# create a root window and an instance of Window,
+# then start the event loop
+#
 if __name__ == "__main__":
-
+    testRun()
     root = tk.Tk()
     Window(root).pack(fill="both", expand=True)
     root.mainloop()
