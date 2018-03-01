@@ -12,9 +12,11 @@ import imp
 
 imp.reload(sys)
 
+
 # Load csv
 df = pd.read_csv("testexcel.csv")
 f = open("testexcel.csv", "r")
+
 tf = 0
 idf = 0
 totalCol = df.shape[0]
