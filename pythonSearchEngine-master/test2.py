@@ -12,10 +12,12 @@ from scipy import spatial
 
 imp.reload(sys)
 
+
 # Load csv
 df = pd.read_csv("testexcel.csv")
 #df = pd.read_csv("music.csv")
 f = open("testexcel.csv", "r")
+
 tf = 0
 idf = 0
 totalCol = df.shape[0]
@@ -144,11 +146,19 @@ def removeQueryStopwords(query):  # remove the stop words
     # print(filteredQuery)
     return filteredQuery
 
+<<<<<<< HEAD
 
 # class User(object):
 #
 #     def __init__(self,user_id):
 #       if user_id == -1:
+=======
+#
+# class User(object):
+#
+#     def __init__(self,user_id):
+#       if user_id == -1
+>>>>>>> 15f4e32cebc64ddb97e0014bcd918a3b26d1c5ed
 #           self.new_user = True
 #       else:
 #           self.new_user = False
@@ -175,7 +185,11 @@ def removeQueryStopwords(query):  # remove the stop words
 #
 #     def getFullName(self):
 #         return self.name
+<<<<<<< HEAD
 #
+=======
+
+>>>>>>> 15f4e32cebc64ddb97e0014bcd918a3b26d1c5ed
 
 
 class Window(tk.Frame):
@@ -239,4 +253,8 @@ if __name__ == "__main__":
     root = tk.Tk()
     Window(root).pack(fill="both", expand=True)
     # uncommon below to run the window
+<<<<<<< HEAD
     #root.mainloop()
+=======
+    root.mainloop()
+>>>>>>> 15f4e32cebc64ddb97e0014bcd918a3b26d1c5ed
