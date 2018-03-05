@@ -1,6 +1,5 @@
 #! -*- coding:utf-8 -*-
 import sys
-
 try:
     # for Python2
     import Tkinter as tk  ## notice capitalized T in Tkinter
@@ -9,17 +8,29 @@ except ImportError:
     import tkinter as tk  ## notice lowercase 't' in tkinter here
 import pandas as pd
 import imp
+from scipy import spatial
 
 imp.reload(sys)
 
 # Load csv
 df = pd.read_csv("testexcel.csv")
+#df = pd.read_csv("music.csv")
 f = open("testexcel.csv", "r")
 tf = 0
 idf = 0
 totalCol = df.shape[0]
 allRec = []
 
+def getLST():
+    masterlst = []
+    for header in df:
+        for item in df[header]:
+            masterlst.append(str(item))
+    return masterlst
+
+#return cossin similarity of two set, entry values are lists
+def getCossinSim (dataSetI,dataSetII):
+    return 1 - spatial.distance.cosine(dataSetI, dataSetII)
 
 def getAName(lst):
     temp = []
@@ -52,10 +63,6 @@ def searching(line, target):
             return True
 
 
-def countTerm(term):
-    return
-
-
 def tfidf(term):
     global tf
     count = 0
@@ -83,21 +90,37 @@ def getArtistTF(ArtistName):  ##return artist term frequency
     return tf
 
 
-def getGeneralTF():
-    return
+def getAllTF(term):   ##return TF
+    tf = getLST().count(str(term))
+    print("term '{}' occurred {} times in the file".format(term, tf))
+    return tf
+
+
+def getSpecificTF (header, term):  #return any tf under specific column
+    tf = 0
+    for item in df[header]:
+        if str(item) == str(term):
+            tf += 1
+    return tf
+
+
 
 
 def testRun():
-    global totalCol
-    print(df.at[0, "artist.name"])
-    print(tf)
+
     ##########
+    # print(totalCol)
+    # getArtistTF('Casual')
     # print(df.loc[df['title'] == 'Relax'])
     # PrintArtistCount()
-    print(totalCol)
     # GroupArtistMbtags()
-    a = sorted("artist.name")
-    getArtistTF('Casual')
+    # dataSetI = [3, 45, 7, 2]
+    # dataSetII = [2, 54, 13, 15]
+    # print(getCossinSim(dataSetI,dataSetII))
+    # print(getAllTF("ccm"))
+    return
+
+
 
 
 # print(a.at[0,"artist.name"])
@@ -122,37 +145,37 @@ def removeQueryStopwords(query):  # remove the stop words
     return filteredQuery
 
 
-class User(object):
-
-    def __init__(self,user_id):
-      if user_id == -1
-          self.new_user = True
-      else:
-          self.new_user = False
-
-          #fetch all records from db about user_id
-          self._populateUser()
-
-    def commit(self):
-        if self.new_user:
-            #Do INSERTs
-        else:
-            #Do UPDATEs
-
-    def delete(self):
-        if self.new_user == False:
-            return False
-
-        #Delete user code here
-
-    def _populate(self):
-        #Query self.user_id from database and
-        #set all instance variables, e.g.
-        #self.name = row['name']
-
-    def getFullName(self):
-        return self.name
-
+# class User(object):
+#
+#     def __init__(self,user_id):
+#       if user_id == -1:
+#           self.new_user = True
+#       else:
+#           self.new_user = False
+#
+#           #fetch all records from db about user_id
+#           self._populateUser()
+#
+#     def commit(self):
+#         if self.new_user:
+#             #Do INSERTs
+#         else:
+#             #Do UPDATEs
+#
+#     def delete(self):
+#         if self.new_user == False:
+#             return False
+#
+#         #Delete user code here
+#
+#     def _populate(self):
+#         #Query self.user_id from database and
+#         #set all instance variables, e.g.
+#         #self.name = row['name']
+#
+#     def getFullName(self):
+#         return self.name
+#
 
 
 class Window(tk.Frame):
@@ -216,4 +239,4 @@ if __name__ == "__main__":
     root = tk.Tk()
     Window(root).pack(fill="both", expand=True)
     # uncommon below to run the window
-    # root.mainloop()
+    #root.mainloop()
