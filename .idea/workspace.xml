@@ -2,8 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4b27fa48-52b4-4239-9c58-15bf613b91c6" name="Default" comment="">
+      <change beforePath="" afterPath="$PROJECT_DIR$/pythonSearchEngine-master/reviews_Digital_Music_5.json" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/pythonSearchEngine-master/test_music.json" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
+      <change beforePath="$PROJECT_DIR$/pythonSearchEngine-master/test2.py" afterPath="$PROJECT_DIR$/pythonSearchEngine-master/test2.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -14,21 +17,45 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="test2.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="test2.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/pythonSearchEngine-master/test2.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="165">
-              <caret line="11" column="10" lean-forward="false" selection-start-line="11" selection-start-column="5" selection-end-line="11" selection-end-column="10" />
+            <state relative-caret-position="342">
+              <caret line="178" column="43" lean-forward="true" selection-start-line="178" selection-start-column="43" selection-end-line="178" selection-end-column="43" />
               <folding>
                 <element signature="e#24#34#0" expanded="true" />
-                <element signature="e#5948#5969#0" expanded="false" />
-                <element signature="e#6693#8837#0" expanded="false" />
+                <element signature="e#952#1004#0" expanded="false" />
+                <element signature="e#1075#1505#0" expanded="false" />
+                <element signature="e#1528#1657#0" expanded="false" />
+                <element signature="e#1767#1822#0" expanded="false" />
+                <element signature="e#1848#1937#0" expanded="false" />
+                <element signature="e#1993#2098#0" expanded="false" />
+                <element signature="e#2149#2243#0" expanded="false" />
+                <element signature="e#2289#2386#0" expanded="false" />
+                <element signature="e#2422#2538#0" expanded="false" />
+                <element signature="e#2562#2709#0" expanded="false" />
+                <element signature="e#2818#3046#0" expanded="false" />
+                <element signature="e#3114#3236#0" expanded="false" />
+                <element signature="e#3276#3390#0" expanded="false" />
+                <element signature="e#3469#3572#0" expanded="false" />
+                <element signature="e#6378#6399#0" expanded="false" />
+                <element signature="e#7123#9267#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="README.md" pinned="false" current-in-tab="true">
+      <file leaf-file-name="json.py" pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/PycharmProjects/untitled/venv/lib/python3.6/site-packages/pandas/io/json/json.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="769">
+              <caret line="575" column="0" lean-forward="false" selection-start-line="575" selection-start-column="0" selection-end-line="575" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="README.md" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
@@ -41,12 +68,32 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="test_music.json" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pythonSearchEngine-master/test_music.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="60">
+              <caret line="4" column="128" lean-forward="false" selection-start-line="4" selection-start-column="128" selection-end-line="4" selection-end-column="128" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="reviews_Digital_Music_5.json" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pythonSearchEngine-master/reviews_Digital_Music_5.json">
+          <provider selected="true" editor-type-id="LargeFileEditor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            </state>
+          </provider>
+        </entry>
+      </file>
     </leaf>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
       <find>text_to_vector</find>
       <find>get_cosine</find>
+      <find>getsy</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -55,8 +102,10 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/pythonSearchEngine-master/test2.py" />
         <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/pythonSearchEngine-master/.idea/test_music.json" />
+        <option value="$PROJECT_DIR$/pythonSearchEngine-master/test_music.json" />
+        <option value="$PROJECT_DIR$/pythonSearchEngine-master/test2.py" />
       </list>
     </option>
   </component>
@@ -72,10 +121,13 @@
           <State>
             <id />
           </State>
+          <State>
+            <id>JSON</id>
+          </State>
         </expanded-state>
         <selected-state>
           <State>
-            <id>Buildout</id>
+            <id>JsonStandardCompliance</id>
           </State>
         </selected-state>
       </profile-state>
@@ -109,6 +161,12 @@
               <item name="pythonSearchEngine" type="462c0819:PsiDirectoryNode" />
               <item name="pythonSearchEngine-master" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="pythonSearchEngine" type="b2602c69:ProjectViewProjectNode" />
+              <item name="pythonSearchEngine" type="462c0819:PsiDirectoryNode" />
+              <item name="pythonSearchEngine-master" type="462c0819:PsiDirectoryNode" />
+              <item name=".idea" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
@@ -120,6 +178,11 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="SearchEverywhereHistoryKey" value="text_to_vector&#9;null&#9;null" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/pythonSearchEngine-master" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -248,7 +311,14 @@
       <option name="project" value="LOCAL" />
       <updated>1520356829590</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="some README content">
+      <created>1520357009325</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1520357009325</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -260,7 +330,7 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3291714" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3291714" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3291714" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -285,7 +355,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="1" />
+      <option name="time" value="2" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -296,8 +366,22 @@
           <caret line="284" column="0" lean-forward="true" selection-start-line="284" selection-start-column="0" selection-end-line="284" selection-end-column="0" />
           <folding>
             <element signature="e#24#34#0" expanded="true" />
-            <element signature="e#5948#5969#0" expanded="false" />
-            <element signature="e#6693#8837#0" expanded="false" />
+            <element signature="e#952#1004#0" expanded="false" />
+            <element signature="e#1075#1505#0" expanded="false" />
+            <element signature="e#1528#1657#0" expanded="false" />
+            <element signature="e#1767#1822#0" expanded="false" />
+            <element signature="e#1848#1937#0" expanded="false" />
+            <element signature="e#1993#2098#0" expanded="false" />
+            <element signature="e#2149#2243#0" expanded="false" />
+            <element signature="e#2289#2386#0" expanded="false" />
+            <element signature="e#2422#2538#0" expanded="false" />
+            <element signature="e#2562#2709#0" expanded="false" />
+            <element signature="e#2818#3046#0" expanded="false" />
+            <element signature="e#3114#3236#0" expanded="false" />
+            <element signature="e#3276#3390#0" expanded="false" />
+            <element signature="e#3469#3572#0" expanded="false" />
+            <element signature="e#6378#6399#0" expanded="false" />
+            <element signature="e#7123#9267#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -319,8 +403,22 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#24#34#0" expanded="true" />
-            <element signature="e#5948#5969#0" expanded="false" />
-            <element signature="e#6693#8837#0" expanded="false" />
+            <element signature="e#952#1004#0" expanded="false" />
+            <element signature="e#1075#1505#0" expanded="false" />
+            <element signature="e#1528#1657#0" expanded="false" />
+            <element signature="e#1767#1822#0" expanded="false" />
+            <element signature="e#1848#1937#0" expanded="false" />
+            <element signature="e#1993#2098#0" expanded="false" />
+            <element signature="e#2149#2243#0" expanded="false" />
+            <element signature="e#2289#2386#0" expanded="false" />
+            <element signature="e#2422#2538#0" expanded="false" />
+            <element signature="e#2562#2709#0" expanded="false" />
+            <element signature="e#2818#3046#0" expanded="false" />
+            <element signature="e#3114#3236#0" expanded="false" />
+            <element signature="e#3276#3390#0" expanded="false" />
+            <element signature="e#3469#3572#0" expanded="false" />
+            <element signature="e#6378#6399#0" expanded="false" />
+            <element signature="e#7123#9267#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -331,21 +429,46 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#24#34#0" expanded="true" />
-            <element signature="e#5948#5969#0" expanded="false" />
-            <element signature="e#6693#8837#0" expanded="false" />
+            <element signature="e#952#1004#0" expanded="false" />
+            <element signature="e#1075#1505#0" expanded="false" />
+            <element signature="e#1528#1657#0" expanded="false" />
+            <element signature="e#1767#1822#0" expanded="false" />
+            <element signature="e#1848#1937#0" expanded="false" />
+            <element signature="e#1993#2098#0" expanded="false" />
+            <element signature="e#2149#2243#0" expanded="false" />
+            <element signature="e#2289#2386#0" expanded="false" />
+            <element signature="e#2422#2538#0" expanded="false" />
+            <element signature="e#2562#2709#0" expanded="false" />
+            <element signature="e#2818#3046#0" expanded="false" />
+            <element signature="e#3114#3236#0" expanded="false" />
+            <element signature="e#3276#3390#0" expanded="false" />
+            <element signature="e#3469#3572#0" expanded="false" />
+            <element signature="e#6378#6399#0" expanded="false" />
+            <element signature="e#7123#9267#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pythonSearchEngine-master/test2.py">
+    <entry file="file://$PROJECT_DIR$/pythonSearchEngine-master/reviews_Digital_Music_5.json">
+      <provider selected="true" editor-type-id="LargeFileEditor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/PycharmProjects/untitled/venv/lib/python3.6/site-packages/pandas/io/json/json.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="11" column="10" lean-forward="false" selection-start-line="11" selection-start-column="5" selection-end-line="11" selection-end-column="10" />
-          <folding>
-            <element signature="e#24#34#0" expanded="true" />
-            <element signature="e#5948#5969#0" expanded="false" />
-            <element signature="e#6693#8837#0" expanded="false" />
-          </folding>
+        <state relative-caret-position="769">
+          <caret line="575" column="0" lean-forward="false" selection-start-line="575" selection-start-column="0" selection-end-line="575" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pythonSearchEngine-master/test_music.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" column="128" lean-forward="false" selection-start-line="4" selection-start-column="128" selection-end-line="4" selection-end-column="128" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -363,6 +486,32 @@
         <state relative-caret-position="120">
           <caret line="8" column="0" lean-forward="true" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pythonSearchEngine-master/test2.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="342">
+          <caret line="178" column="43" lean-forward="true" selection-start-line="178" selection-start-column="43" selection-end-line="178" selection-end-column="43" />
+          <folding>
+            <element signature="e#24#34#0" expanded="true" />
+            <element signature="e#952#1004#0" expanded="false" />
+            <element signature="e#1075#1505#0" expanded="false" />
+            <element signature="e#1528#1657#0" expanded="false" />
+            <element signature="e#1767#1822#0" expanded="false" />
+            <element signature="e#1848#1937#0" expanded="false" />
+            <element signature="e#1993#2098#0" expanded="false" />
+            <element signature="e#2149#2243#0" expanded="false" />
+            <element signature="e#2289#2386#0" expanded="false" />
+            <element signature="e#2422#2538#0" expanded="false" />
+            <element signature="e#2562#2709#0" expanded="false" />
+            <element signature="e#2818#3046#0" expanded="false" />
+            <element signature="e#3114#3236#0" expanded="false" />
+            <element signature="e#3276#3390#0" expanded="false" />
+            <element signature="e#3469#3572#0" expanded="false" />
+            <element signature="e#6378#6399#0" expanded="false" />
+            <element signature="e#7123#9267#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>

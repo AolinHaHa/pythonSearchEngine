@@ -1,6 +1,9 @@
 #! -*- coding:utf-8 -*-
 import sys
+import json
+import numpy
 from PyDictionary import PyDictionary
+from pprint import pprint
 try:
     # for Python2
     import Tkinter as tk  ## notice capitalized T in Tkinter
@@ -27,6 +30,13 @@ totalCol = df.shape[0]
 allRec = []
 WORD = re.compile(r'\w+')
 dictionary=PyDictionary()
+
+##########load music review data
+reviewData = []
+with open('test_music.json') as f:
+    for line in f:
+        reviewData.append(json.loads(line)['reviewText'])
+
 
 
 #convert text to vectors
@@ -139,22 +149,28 @@ def getSpecificTF(header, term):  # return any tf under specific column
             tf += 1
     return tf
 
-def compareCos(query, target):
-    return
-
+#return a list of synonymn words
 def getSynonym(term):
     lst = []
     for item in dictionary.synonym(str(term)):
         lst.append(item)
     return lst
 
+# #return a string of synonymn words
+# def getSynonymStr(term):
+#     SynonymStr = ""
+#     for item in dictionary.synonym(str(term)):
+#         SynonymStr = SynonymStr + " " + str(item)
+#     return SynonymStr
+
 def getAdvancedQuery(query):
     advancedQuery = []
-    for item in query:
+    for item in query.split(' '):
         for subItem in getSynonym(item):
             advancedQuery.append(subItem)
-    #print (advancedQuery)
-    return advancedQuery
+
+    return " ".join(advancedQuery)
+
 
 def testRun():
     ##########
@@ -167,8 +183,10 @@ def testRun():
     # dataSetII = [2, 54, 13, 15]
     # print(getCossinSim(dataSetI,dataSetII))
     # print(getAllTF("ccm"))
-    # print('Cosine:', getCosin('This sentence is similar to a foo bar sentence .', 'This is a foo bar sentence .'))
+    print('Cosine:', getCosin(getAdvancedQuery("interesting music"), reviewData[1]))
     # print(getSynonym("popular"))
+    print(getAdvancedQuery("interesting music"))
+
     return
 
 
@@ -292,5 +310,5 @@ if __name__ == "__main__":
     root = tk.Tk()
     Window(root).pack(fill="both", expand=True)
     # uncommon below to run the window
-    root.mainloop()
+    #root.mainloop()
 
