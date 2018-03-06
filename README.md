@@ -8,7 +8,7 @@ Python intelligent data retrieval Search Engine
 
 -pandas
 
--scipy
+`-scipy`
 
 
 ##Key functions
