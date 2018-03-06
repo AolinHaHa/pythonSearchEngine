@@ -31,11 +31,14 @@ allRec = []
 WORD = re.compile(r'\w+')
 dictionary=PyDictionary()
 
-##########load music review data
+#load music review data, store into dictionary data type
 reviewData = []
 with open('test_music.json') as f:
     for line in f:
-        reviewData.append(json.loads(line)['reviewText'])
+        #reviewData.append(json.loads(line)['reviewText'])
+        record = {json.loads(line)['asin'] : json.loads(line)['reviewText']}
+        reviewData.append(dict(record))
+print(reviewData)
 
 
 
@@ -61,16 +64,12 @@ def getCosin(text1, text2):
         return float(numerator) / denominator
 
 
-
-
 def getLST():
     masterlst = []
     for header in df:
         for item in df[header]:
             masterlst.append(str(item))
     return masterlst
-
-
 
 
 # return cossin similarity of two set, entry values are lists
@@ -102,12 +101,6 @@ def getRecordByArtistName(artistName):
     return df.loc[df['artist.name'] == artistName]
 
 
-def searching(line, target):
-    for word in line.split(' '):
-        if word == target:
-            print("found " + target)
-            return True
-
 
 def tfidf(term):
     global tf
@@ -116,8 +109,8 @@ def tfidf(term):
     print("searching {} words".format(count))
     print("found target {} times".format(tf))
 
-
-def GroupArtistMbtags():  # grouy by mbtags, get number of mbtags and number of artist/ group by keys
+# grouy by mbtags, get number of mbtags and number of artist/ group by keys
+def GroupArtistMbtags():
     lst = []
     print("Groupby mbtags\n", df.groupby('artist_mbtags_count').artist_mbtags_count.count())
     print("Groupby keys\n")
@@ -126,8 +119,8 @@ def GroupArtistMbtags():  # grouy by mbtags, get number of mbtags and number of 
         lst.append(item)
     print(lst)
 
-
-def getArtistTF(ArtistName):  ##return artist term frequency
+ ##return artist term frequency
+def getArtistTF(ArtistName):
     tf = 0
     for i in df['artist.name'] == ArtistName:
         if i == True:
@@ -135,14 +128,14 @@ def getArtistTF(ArtistName):  ##return artist term frequency
     print(tf)
     return tf
 
-
-def getAllTF(term):  ##return TF
+ ##return TF
+def getAllTF(term):
     tf = getLST().count(str(term))
     print("term '{}' occurred {} times in the file".format(term, tf))
     return tf
 
-
-def getSpecificTF(header, term):  # return any tf under specific column
+ # return any tf under specific column
+def getSpecificTF(header, term):
     tf = 0
     for item in df[header]:
         if str(item) == str(term):
@@ -156,12 +149,6 @@ def getSynonym(term):
         lst.append(item)
     return lst
 
-# #return a string of synonymn words
-# def getSynonymStr(term):
-#     SynonymStr = ""
-#     for item in dictionary.synonym(str(term)):
-#         SynonymStr = SynonymStr + " " + str(item)
-#     return SynonymStr
 
 def getAdvancedQuery(query):
     advancedQuery = []
@@ -170,6 +157,17 @@ def getAdvancedQuery(query):
             advancedQuery.append(subItem)
 
     return " ".join(advancedQuery)
+
+
+#return a list of cosine similarity value of all review data and query
+def getMaxCosSim(query):
+    scores = []
+    for target in reviewData:
+        scores.append(getCosin(target.values(), query))
+    scores.sort()
+    scores.reverse()
+    print(scores)
+    return scores
 
 
 def testRun():
@@ -183,19 +181,18 @@ def testRun():
     # dataSetII = [2, 54, 13, 15]
     # print(getCossinSim(dataSetI,dataSetII))
     # print(getAllTF("ccm"))
-    print('Cosine:', getCosin(getAdvancedQuery("interesting music"), reviewData[1]))
+    # print('Cosine:', getCosin(getAdvancedQuery("interesting music"), reviewData[1]))
     # print(getSynonym("popular"))
     print(getAdvancedQuery("interesting music"))
+    # getMaxCosSim(getAdvancedQuery("interesting music"))
+
 
     return
 
 
 
-
-# print(a.at[0,"artist.name"])
-
-
-def removeQueryStopwords(query):  # remove the stop words
+ # remove the stop words
+def removeQueryStopwords(query):
     stopwords = ["I", "a", "about", "above", "after", "again", "against", "all", "am", "an", "and", "any", "are", "as",
                  "at", "be", "because", "been", "before", "being", "below", "between", "both", "but", "by", "could",
                  "did", "do", "does", "doing", "down", "during", "each", "few", "for", "from", "further", "had", "has",
