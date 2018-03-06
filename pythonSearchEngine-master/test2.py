@@ -1,5 +1,6 @@
 #! -*- coding:utf-8 -*-
 import sys
+
 try:
     # for Python2
     import Tkinter as tk  ## notice capitalized T in Tkinter
@@ -9,19 +10,45 @@ except ImportError:
 import pandas as pd
 import imp
 from scipy import spatial
+import re, math
+from collections import Counter
 
 imp.reload(sys)
-
-
 # Load csv
 df = pd.read_csv("testexcel.csv")
-#df = pd.read_csv("music.csv")
+# df = pd.read_csv("music.csv")
 f = open("testexcel.csv", "r")
-
 tf = 0
 idf = 0
 totalCol = df.shape[0]
 allRec = []
+WORD = re.compile(r'\w+')
+
+
+
+
+def text2Vector(text):
+    words = WORD.findall(text)
+    return Counter(words)
+
+def getCosin(text1, text2):
+    vec1 = text2Vector(text1)
+    vec2 = text2Vector(text2)
+    intersection = set(vec1.keys()) & set(vec2.keys())
+    numerator = sum([vec1[x] * vec2[x] for x in intersection])
+
+    sum1 = sum([vec1[x] ** 2 for x in vec1.keys()])
+    sum2 = sum([vec2[x] ** 2 for x in vec2.keys()])
+    denominator = math.sqrt(sum1) * math.sqrt(sum2)
+
+    if not denominator:
+        return 0.0
+    else:
+        return float(numerator) / denominator
+
+
+
+
 
 def getLST():
     masterlst = []
@@ -30,9 +57,11 @@ def getLST():
             masterlst.append(str(item))
     return masterlst
 
-#return cossin similarity of two set, entry values are lists
-def getCossinSim (dataSetI,dataSetII):
+
+# return cossin similarity of two set, entry values are lists
+def getCossinSim(dataSetI, dataSetII):
     return 1 - spatial.distance.cosine(dataSetI, dataSetII)
+
 
 def getAName(lst):
     temp = []
@@ -92,13 +121,13 @@ def getArtistTF(ArtistName):  ##return artist term frequency
     return tf
 
 
-def getAllTF(term):   ##return TF
+def getAllTF(term):  ##return TF
     tf = getLST().count(str(term))
     print("term '{}' occurred {} times in the file".format(term, tf))
     return tf
 
 
-def getSpecificTF (header, term):  #return any tf under specific column
+def getSpecificTF(header, term):  # return any tf under specific column
     tf = 0
     for item in df[header]:
         if str(item) == str(term):
@@ -106,10 +135,7 @@ def getSpecificTF (header, term):  #return any tf under specific column
     return tf
 
 
-
-
 def testRun():
-
     ##########
     # print(totalCol)
     # getArtistTF('Casual')
@@ -119,10 +145,8 @@ def testRun():
     # dataSetI = [3, 45, 7, 2]
     # dataSetII = [2, 54, 13, 15]
     # print(getCossinSim(dataSetI,dataSetII))
-    # print(getAllTF("ccm"))
-    return
-
-
+    print(getAllTF("ccm"))
+    print('Cosine:', getCosin('This sentence is similar to a foo bar sentence .', 'This is a foo bar sentence .'))
 
 
 # print(a.at[0,"artist.name"])
@@ -145,7 +169,6 @@ def removeQueryStopwords(query):  # remove the stop words
     filteredQuery = [word for word in query.split(" ") if word.lower() not in stopwords]
     # print(filteredQuery)
     return filteredQuery
-
 
 
 # class User(object):
@@ -242,5 +265,4 @@ if __name__ == "__main__":
     root = tk.Tk()
     Window(root).pack(fill="both", expand=True)
     # uncommon below to run the window
-    #root.mainloop()
-
+    # root.mainloop()
