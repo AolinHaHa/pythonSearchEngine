@@ -2,16 +2,16 @@
 Python intelligent data retrieval Search Engine 
 
 
-##Required Packages
+**Required Packages**
 
--PyDictionary
+_PyDictionary_
 
--pandas
+_pandas_
 
-`-scipy`
+_scipy_
 
 
-##Key functions
+**Key functions**
 
 getCosin - return cosin similarity for two strings (queries)
 
