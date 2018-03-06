@@ -1,6 +1,6 @@
 #! -*- coding:utf-8 -*-
 import sys
-
+from PyDictionary import PyDictionary
 try:
     # for Python2
     import Tkinter as tk  ## notice capitalized T in Tkinter
@@ -12,6 +12,9 @@ import imp
 from scipy import spatial
 import re, math
 from collections import Counter
+import warnings
+#import the_module_that_warns
+warnings.simplefilter("ignore", UserWarning)
 
 imp.reload(sys)
 # Load csv
@@ -23,14 +26,15 @@ idf = 0
 totalCol = df.shape[0]
 allRec = []
 WORD = re.compile(r'\w+')
+dictionary=PyDictionary()
 
 
-
-
+#convert text to vectors
 def text2Vector(text):
     words = WORD.findall(text)
     return Counter(words)
 
+#return cosin similarity for strings
 def getCosin(text1, text2):
     vec1 = text2Vector(text1)
     vec2 = text2Vector(text2)
@@ -49,13 +53,14 @@ def getCosin(text1, text2):
 
 
 
-
 def getLST():
     masterlst = []
     for header in df:
         for item in df[header]:
             masterlst.append(str(item))
     return masterlst
+
+
 
 
 # return cossin similarity of two set, entry values are lists
@@ -134,6 +139,22 @@ def getSpecificTF(header, term):  # return any tf under specific column
             tf += 1
     return tf
 
+def compareCos(query, target):
+    return
+
+def getSynonym(term):
+    lst = []
+    for item in dictionary.synonym(str(term)):
+        lst.append(item)
+    return lst
+
+def getAdvancedQuery(query):
+    advancedQuery = []
+    for item in query:
+        for subItem in getSynonym(item):
+            advancedQuery.append(subItem)
+    #print (advancedQuery)
+    return advancedQuery
 
 def testRun():
     ##########
@@ -145,8 +166,12 @@ def testRun():
     # dataSetI = [3, 45, 7, 2]
     # dataSetII = [2, 54, 13, 15]
     # print(getCossinSim(dataSetI,dataSetII))
-    print(getAllTF("ccm"))
-    print('Cosine:', getCosin('This sentence is similar to a foo bar sentence .', 'This is a foo bar sentence .'))
+    # print(getAllTF("ccm"))
+    # print('Cosine:', getCosin('This sentence is similar to a foo bar sentence .', 'This is a foo bar sentence .'))
+    # print(getSynonym("popular"))
+    return
+
+
 
 
 # print(a.at[0,"artist.name"])
@@ -248,7 +273,9 @@ class Window(tk.Frame):
         # it to an int, and do a calculation
         try:
             i = str(self.entry.get())
-            result = "Your query is: %s \n Filtered query is: %s" % (i, removeQueryStopwords(i))
+            result = "Your query is: %s \n Filtered query is: %s \n Advanced query is: %s" % (i, removeQueryStopwords(i), getAdvancedQuery(removeQueryStopwords(i)))
+
+
         except ValueError:
             result = "Please enter string only"
 
@@ -265,4 +292,5 @@ if __name__ == "__main__":
     root = tk.Tk()
     Window(root).pack(fill="both", expand=True)
     # uncommon below to run the window
-    # root.mainloop()
+    root.mainloop()
+
