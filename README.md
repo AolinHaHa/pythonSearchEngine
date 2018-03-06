@@ -3,9 +3,11 @@ Python intelligent data retrieval Search Engine
 
 
 ##Required Packages
-PyDictionary
-pandas
-scipy
+-PyDictionary
+
+-pandas
+
+-scipy
 
 
 ##Key functions
