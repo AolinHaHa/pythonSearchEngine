@@ -147,6 +147,7 @@ def getSpecificTF(header, term):
 #return a list of synonymn words
 def getSynonym(term):
     lst = []
+    lst.append(str(term))
     for item in dictionary.synonym(str(term)):
         lst.append(item)
     return lst
@@ -154,7 +155,8 @@ def getSynonym(term):
 
 def getAdvancedQuery(query):
     advancedQuery = []
-    for item in query.split(' '):
+    # for item in query.split(' '):
+    for item in query:
         for subItem in getSynonym(item):
             advancedQuery.append(subItem)
 
@@ -183,29 +185,8 @@ def rankingResult(iniResult):
     rankingLst = sorted(rankingLst, key=itemgetter(1))
     rankingLst.reverse()
     print(rankingLst)
+    print("length rangking list: ", str(len(rankingLst)))
     return rankingLst
-
-
-def testRun():
-    ##########
-    # print(totalCol)
-    # getArtistTF('Casual')
-    # print(df.loc[df['title'] == 'Relax'])
-    # PrintArtistCount()
-    # GroupArtistMbtags()
-    # dataSetI = [3, 45, 7, 2]
-    # dataSetII = [2, 54, 13, 15]
-    # print(getCossinSim(dataSetI,dataSetII))
-    # print(getAllTF("ccm"))
-    # print('Cosine:', getCosin(getAdvancedQuery("interesting music"), reviewData[1]))
-    # print(getSynonym("popular"))
-    #print(getAdvancedQuery("interesting music"))
-    #getMaxCosSim(getAdvancedQuery("interesting music"))
-    rankingResult(getMaxCosSim(getAdvancedQuery("dirty rap")))
-
-
-    return
-
 
 
  # remove the stop words
@@ -226,6 +207,37 @@ def removeQueryStopwords(query):
     filteredQuery = [word for word in query.split(" ") if word.lower() not in stopwords]
     # print(filteredQuery)
     return filteredQuery
+
+
+def testRun():
+    ##########
+    # print(totalCol)
+    # getArtistTF('Casual')
+    # print(df.loc[df['title'] == 'Relax'])
+    # PrintArtistCount()
+    # GroupArtistMbtags()
+    # dataSetI = [3, 45, 7, 2]
+    # dataSetII = [2, 54, 13, 15]
+    # print(getCossinSim(dataSetI,dataSetII))
+    # print(getAllTF("ccm"))
+    # print('Cosine:', getCosin(getAdvancedQuery("interesting music"), reviewData[1]))
+    # print(getSynonym("popular"))
+    #print(getAdvancedQuery("interesting music"))
+    #getMaxCosSim(getAdvancedQuery("interesting music"))
+    #rankingResult(getMaxCosSim(getAdvancedQuery("dirty rap")))
+    #rankingResult(getMaxCosSim(getAdvancedQuery(removeQueryStopwords("what is the most popular song by kanye west"))))
+    #rankingResult(getMaxCosSim("what is the most popular song by kanye west"))
+    #query = "happy glad funny"
+    query = "dirty rap"
+    print("Query: ", query)
+    print("Removed stop words query: ", removeQueryStopwords(query))
+    print("Advanced stop words query: ", getAdvancedQuery(removeQueryStopwords(query)))
+    rankingResult(getMaxCosSim(query))
+    rankingResult(getMaxCosSim(getAdvancedQuery(removeQueryStopwords(query))))
+
+    return
+
+
 
 
 # class User(object):
