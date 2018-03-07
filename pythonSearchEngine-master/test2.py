@@ -40,7 +40,7 @@ with open('reviews_Digital_Music_5.json') as f:
         #reviewData.append(json.loads(line)['reviewText'])
         record = {json.loads(line)['asin'] : json.loads(line)['reviewText']}
         reviewData.append(dict(record))
-print(reviewData)
+# print(reviewData)
 
 
 
