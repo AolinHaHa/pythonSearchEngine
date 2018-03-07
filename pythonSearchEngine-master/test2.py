@@ -3,6 +3,8 @@ import sys
 import json
 import numpy
 from PyDictionary import PyDictionary
+import itertools
+from operator import itemgetter
 from pprint import pprint
 try:
     # for Python2
@@ -18,22 +20,22 @@ from collections import Counter
 import warnings
 #import the_module_that_warns
 warnings.simplefilter("ignore", UserWarning)
-
 imp.reload(sys)
 # Load csv
 df = pd.read_csv("testexcel.csv")
 # df = pd.read_csv("music.csv")
-f = open("testexcel.csv", "r")
+#f = open("testexcel.csv", "r")
 tf = 0
 idf = 0
 totalCol = df.shape[0]
 allRec = []
 WORD = re.compile(r'\w+')
-dictionary=PyDictionary()
+dictionary = PyDictionary()
 
 #load music review data, store into dictionary data type
 reviewData = []
-with open('test_music.json') as f:
+#with open('test_music.json') as f:
+with open('reviews_Digital_Music_5.json') as f:
     for line in f:
         #reviewData.append(json.loads(line)['reviewText'])
         record = {json.loads(line)['asin'] : json.loads(line)['reviewText']}
@@ -145,6 +147,7 @@ def getSpecificTF(header, term):
 #return a list of synonymn words
 def getSynonym(term):
     lst = []
+    lst.append(str(term))
     for item in dictionary.synonym(str(term)):
         lst.append(item)
     return lst
@@ -152,7 +155,8 @@ def getSynonym(term):
 
 def getAdvancedQuery(query):
     advancedQuery = []
-    for item in query.split(' '):
+    # for item in query.split(' '):
+    for item in query:
         for subItem in getSynonym(item):
             advancedQuery.append(subItem)
 
@@ -163,32 +167,26 @@ def getAdvancedQuery(query):
 def getMaxCosSim(query):
     scores = []
     for target in reviewData:
-        scores.append(getCosin(target.values(), query))
-    scores.sort()
-    scores.reverse()
-    print(scores)
+        record = {'id': str(target.keys())[12:-3], 'cosSim': getCosin(str(target.values()), query)}
+        scores.append(dict(record))
+    # print(scores)
     return scores
 
-
-def testRun():
-    ##########
-    # print(totalCol)
-    # getArtistTF('Casual')
-    # print(df.loc[df['title'] == 'Relax'])
-    # PrintArtistCount()
-    # GroupArtistMbtags()
-    # dataSetI = [3, 45, 7, 2]
-    # dataSetII = [2, 54, 13, 15]
-    # print(getCossinSim(dataSetI,dataSetII))
-    # print(getAllTF("ccm"))
-    # print('Cosine:', getCosin(getAdvancedQuery("interesting music"), reviewData[1]))
-    # print(getSynonym("popular"))
-    print(getAdvancedQuery("interesting music"))
-    # getMaxCosSim(getAdvancedQuery("interesting music"))
-
-
-    return
-
+#groupby the getMaxCossim result by music ID, and get the average similarity score
+def rankingResult(iniResult):
+    lst = []
+    rankingLst = []
+    iniResult = sorted(iniResult, key=itemgetter('id'))
+    for key, value in itertools.groupby(iniResult, key=itemgetter('id')):
+        for i in value:
+            lst.append(i.get('cosSim'))
+        avgscore = float(sum(lst)/len(lst))
+        rankingLst.append([key, avgscore])
+    rankingLst = sorted(rankingLst, key=itemgetter(1))
+    rankingLst.reverse()
+    print(rankingLst)
+    print("length rangking list: ", str(len(rankingLst)))
+    return rankingLst
 
 
  # remove the stop words
@@ -209,6 +207,37 @@ def removeQueryStopwords(query):
     filteredQuery = [word for word in query.split(" ") if word.lower() not in stopwords]
     # print(filteredQuery)
     return filteredQuery
+
+
+def testRun():
+    ##########
+    # print(totalCol)
+    # getArtistTF('Casual')
+    # print(df.loc[df['title'] == 'Relax'])
+    # PrintArtistCount()
+    # GroupArtistMbtags()
+    # dataSetI = [3, 45, 7, 2]
+    # dataSetII = [2, 54, 13, 15]
+    # print(getCossinSim(dataSetI,dataSetII))
+    # print(getAllTF("ccm"))
+    # print('Cosine:', getCosin(getAdvancedQuery("interesting music"), reviewData[1]))
+    # print(getSynonym("popular"))
+    #print(getAdvancedQuery("interesting music"))
+    #getMaxCosSim(getAdvancedQuery("interesting music"))
+    #rankingResult(getMaxCosSim(getAdvancedQuery("dirty rap")))
+    #rankingResult(getMaxCosSim(getAdvancedQuery(removeQueryStopwords("what is the most popular song by kanye west"))))
+    #rankingResult(getMaxCosSim("what is the most popular song by kanye west"))
+    #query = "happy glad funny"
+    query = "dirty rap"
+    print("Query: ", query)
+    print("Removed stop words query: ", removeQueryStopwords(query))
+    print("Advanced stop words query: ", getAdvancedQuery(removeQueryStopwords(query)))
+    rankingResult(getMaxCosSim(query))
+    rankingResult(getMaxCosSim(getAdvancedQuery(removeQueryStopwords(query))))
+
+    return
+
+
 
 
 # class User(object):
