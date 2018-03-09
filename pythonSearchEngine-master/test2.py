@@ -1,6 +1,6 @@
 #! -*- coding:utf-8 -*-
 import sys
-
+import math
 try:
     # for Python2
     import Tkinter as tk  ## notice capitalized T in Tkinter
@@ -19,7 +19,7 @@ f = open("testexcel.csv", "r")
 
 tf = 0
 idf = 0
-totalCol = df.shape[0]
+totalCol = df.shape[0]-1
 allRec = []
 
 
@@ -58,12 +58,13 @@ def countTerm(term):
     return
 
 
-def tfidf(term):
-    global tf
-    count = 0
-    df.loc[df['title'] == term]
-    print("searching {} words".format(count))
-    print("found target {} times".format(tf))
+def tfidf(tf, idf):
+    # print("searching {} words".format(count))
+    # print("found target {} times".format(tf))
+    tfidf = tf*idf
+    print("tfidf is: ", str(tfidf))
+    return tfidf
+
 
 
 def GroupArtistMbtags():  # grouy by mbtags, get number of mbtags and number of artist/ group by keys
@@ -84,6 +85,11 @@ def getArtistTF(ArtistName):  ##return artist term frequency
     print(tf)
     return tf
 
+def getIdf(tfk):
+    # print("totalCol: ", totalCol)
+    # print("tfk: ", tfk)
+    return math.log((totalCol/tfk), 2)
+
 
 def getGeneralTF():
     return
@@ -93,13 +99,16 @@ def testRun():
     global totalCol
     print(df.at[0, "artist.name"])
     print(tf)
-    ##########
-    # print(df.loc[df['title'] == 'Relax'])
-    # PrintArtistCount()
     print(totalCol)
     # GroupArtistMbtags()
     a = sorted("artist.name")
     getArtistTF('Casual')
+    print("Casual TF: ", getArtistTF("Casual"))
+    print("Casual idf: ", getIdf(getArtistTF("Casual")))
+    tfidf(getArtistTF('Casual'), getIdf(getArtistTF("Casual")))
+
+
+
 
 
 # print(a.at[0,"artist.name"])
@@ -123,6 +132,7 @@ def removeQueryStopwords(query):  # remove the stop words
     # print(filteredQuery)
     return filteredQuery
 
+###User Obj
 #
 # class User(object):
 #
@@ -218,4 +228,4 @@ if __name__ == "__main__":
     root = tk.Tk()
     Window(root).pack(fill="both", expand=True)
     # uncommon below to run the window
-    root.mainloop()
+    #root.mainloop()
