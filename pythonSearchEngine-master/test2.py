@@ -1,15 +1,13 @@
 #! -*- coding:utf-8 -*-
 import sys
-<<<<<<< HEAD
 import math
-=======
 import json
 import numpy
 from PyDictionary import PyDictionary
 import itertools
 from operator import itemgetter
 from pprint import pprint
->>>>>>> 3f25327f7e6937b5fba94ccb9a54081fe890c2be
+
 try:
     # for Python2
     import Tkinter as tk  ## notice capitalized T in Tkinter
@@ -135,19 +133,19 @@ def getArtistTF(ArtistName):
     print(tf)
     return tf
 
-<<<<<<< HEAD
+
 def getIdf(tfk):
     # print("totalCol: ", totalCol)
     # print("tfk: ", tfk)
     return math.log((totalCol/tfk), 2)
 
-=======
+
  ##return TF
 def getAllTF(term):
     tf = getLST().count(str(term))
     print("term '{}' occurred {} times in the file".format(term, tf))
     return tf
->>>>>>> 3f25327f7e6937b5fba94ccb9a54081fe890c2be
+
 
  # return any tf under specific column
 def getSpecificTF(header, term):
@@ -165,7 +163,7 @@ def getSynonym(term):
         lst.append(item)
     return lst
 
-<<<<<<< HEAD
+
 def testRun():
     global totalCol
     print(df.at[0, "artist.name"])
@@ -180,8 +178,6 @@ def testRun():
 
 
 
-=======
->>>>>>> 3f25327f7e6937b5fba94ccb9a54081fe890c2be
 
 def getAdvancedQuery(query):
     advancedQuery = []
@@ -238,10 +234,10 @@ def removeQueryStopwords(query):
     # print(filteredQuery)
     return filteredQuery
 
-<<<<<<< HEAD
+
 ###User Obj
 #
-=======
+
 
 def testRun():
     ##########
@@ -262,19 +258,19 @@ def testRun():
     #rankingResult(getMaxCosSim(getAdvancedQuery(removeQueryStopwords("what is the most popular song by kanye west"))))
     #rankingResult(getMaxCosSim("what is the most popular song by kanye west"))
     #query = "happy glad funny"
-    query = "dirty rap"
+    query = "give me some dirty rap"
     print("Query: ", query)
     print("Removed stop words query: ", removeQueryStopwords(query))
     print("Advanced stop words query: ", getAdvancedQuery(removeQueryStopwords(query)))
-    rankingResult(getMaxCosSim(query))
-    rankingResult(getMaxCosSim(getAdvancedQuery(removeQueryStopwords(query))))
+    #rankingResult(getMaxCosSim(query))
+    #rankingResult(getMaxCosSim(getAdvancedQuery(removeQueryStopwords(query))))
 
     return
 
 
 
 
->>>>>>> 3f25327f7e6937b5fba94ccb9a54081fe890c2be
+
 # class User(object):
 #
 #     def __init__(self,user_id):
@@ -372,7 +368,3 @@ if __name__ == "__main__":
     Window(root).pack(fill="both", expand=True)
     # uncommon below to run the window
     #root.mainloop()
-<<<<<<< HEAD
-=======
-
->>>>>>> 3f25327f7e6937b5fba94ccb9a54081fe890c2be
