@@ -7,7 +7,6 @@ from PyDictionary import PyDictionary
 import itertools
 from operator import itemgetter
 from pprint import pprint
-
 try:
     # for Python2
     import Tkinter as tk  ## notice capitalized T in Tkinter
@@ -43,8 +42,6 @@ with open('reviews_Digital_Music_5.json') as f:
         record = {json.loads(line)['asin'] : json.loads(line)['reviewText']}
         reviewData.append(dict(record))
 # print(reviewData)
-
-
 
 #convert text to vectors
 def text2Vector(text):
@@ -258,7 +255,7 @@ def testRun():
     #rankingResult(getMaxCosSim(getAdvancedQuery(removeQueryStopwords("what is the most popular song by kanye west"))))
     #rankingResult(getMaxCosSim("what is the most popular song by kanye west"))
     #query = "happy glad funny"
-    query = "give me some dirty rap"
+    query = "country song beautiful lyric"
     print("Query: ", query)
     print("Removed stop words query: ", removeQueryStopwords(query))
     print("Advanced stop words query: ", getAdvancedQuery(removeQueryStopwords(query)))
