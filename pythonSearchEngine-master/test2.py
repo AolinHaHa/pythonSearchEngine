@@ -15,10 +15,13 @@ except ImportError:
     import tkinter as tk  ## notice lowercase 't' in tkinter here
 import pandas as pd
 import imp
+from tkinter import *
 from scipy import spatial
 import re, math
 from collections import Counter
 import warnings
+import scrapy
+
 #import the_module_that_warns
 warnings.simplefilter("ignore", UserWarning)
 imp.reload(sys)
@@ -172,8 +175,6 @@ def getAdvancedQuery(query):
     return " ".join(advancedQuery)
 
 
-
-
 def getAllArtist ():
     artistLst = []
     for i in df['artist.name']:
@@ -254,6 +255,7 @@ def rankingResult(iniResult):
     rankingLst.reverse()
     print(rankingLst)
     print("length rangking list: ", str(len(rankingLst)))
+
     return rankingLst
 
  # remove the stop words
@@ -276,10 +278,6 @@ def removeQueryStopwords(query):
     return filteredQuery
 
 
-###User Obj
-#
-
-
 def testRun():
     ##########
     # print(totalCol)
@@ -299,13 +297,14 @@ def testRun():
     #rankingResult(getMaxCosSim(getAdvancedQuery(removeQueryStopwords("what is the most popular song by kanye west"))))
     #rankingResult(getMaxCosSim("what is the most popular song by kanye west"))
     #query = "happy glad funny"
-    query = "Casual"
+    query = "money savage bad rap"
     print("Query: ", query)
     print("Removed stop words query: ", removeQueryStopwords(query))
     print("Advanced stop words query: ", getAdvancedQuery(removeQueryStopwords(query)))
-    print(getMaxTitleCosSim(getAdvancedQuery(removeQueryStopwords(query))))
-    print(getMaxArtistCosSim(getAdvancedQuery(removeQueryStopwords(query))))
-    rankingResult(getMaxReviewCosSim(getAdvancedQuery(removeQueryStopwords(query))))
+    #print(getMaxTitleCosSim(getAdvancedQuery(removeQueryStopwords(query))))
+    #print(getMaxArtistCosSim(getAdvancedQuery(removeQueryStopwords(query))))
+    for item in rankingResult(getMaxReviewCosSim(getAdvancedQuery(removeQueryStopwords(query))))[:5]:
+        print (item[0])
 
 
     return
@@ -350,18 +349,16 @@ def testRun():
 class Window(tk.Frame):
     def __init__(self, parent):
         tk.Frame.__init__(self, parent)
-
         # create a prompt, an input box, an output label,
         # and a button to do the computation
         self.prompt = tk.Label(self, text="Search Query:", anchor="w")
         self.entry = tk.Entry(self)
-        self.submit = tk.Button(self, text="Search Query", command=self.searchButton)
+        self.submit = tk.Button(self, text="Get Advanced Query", command=self.searchButton)
         self.output = tk.Label(self, text="Def Label")
 
-        self.artistName = tk.Label(self, text="Search artist name:", anchor="w")
-        self.artistEntry = tk.Entry(self)
-        self.artistSubmit = tk.Button(self, text="Search Artist", command=self.searchArtistButton)
-        self.artistOutput = tk.Label(self, text="Def Label")
+
+        self.artistSubmit = tk.Button(self, text="Search Artist TF", command=self.searchArtistButton)
+        self.artistOutput = tk.Label(self, text="Artist TF Label")
 
         # lay the widgets out on the screen.
         self.prompt.pack(side="top", fill="x")
@@ -369,20 +366,66 @@ class Window(tk.Frame):
         self.output.pack(side="top", fill="x", expand=True)
         self.submit.pack(side="right")
 
-        self.artistName.pack(side="top", fill="x")
-        self.artistEntry.pack(side="top", fill="x", padx=300)
+
         self.artistOutput.pack(side="top", fill="x", padx=300, expand=True)
         self.artistSubmit.pack(side="right")
+
+        self.SearchByTitle = tk.Button(self, text="Search By Title", command=self.searchByTitleButton)
+        self.SearchByTitleOutput = tk.Label(self, text="Search By Title Label", wraplength=300, justify=LEFT)
+        self.SearchByTitleOutput.pack(side="top", fill="x", padx=300, expand=True)
+        self.SearchByTitle.pack(pady=10, side="right")
+
+        self.SearchByArtistName = tk.Button(self, text="Search By Artist Name", command=self.searchByArtistNameButton)
+        self.SearchByArtistNameOutput = tk.Label(self, text="Search By Artist Name Label", wraplength=300, justify=LEFT)
+        self.SearchByArtistNameOutput.pack(side="top", fill="x", padx=300, expand=True)
+        self.SearchByArtistName.pack(pady=10, side="right")
+
+        self.SearchByReview = tk.Button(self, text="Search By Review", command=self.SearchByReviewButton)
+        self.SearchByArtistNameOutput = tk.Label(self, text="Search By Review Label", wraplength=300, justify=LEFT)
+        self.SearchByArtistNameOutput.pack(side="top", fill="x", padx=300, expand=True)
+        self.SearchByReview.pack(pady=10, side="right")
+
+
+# give top 5 results
+    def SearchByReviewButton(self):
+        query = str(self.entry.get())
+        try:
+            result = rankingResult(getMaxReviewCosSim(getAdvancedQuery(removeQueryStopwords(query))))[:5]
+        except ValueError:
+            result = "invalid input"
+        self.SearchByTitleOutput.configure(text=result)
+
+
+# give top 5 results
+    def searchByArtistNameButton(self):
+        query = str(self.entry.get())
+        try:
+            result = getMaxArtistCosSim(getAdvancedQuery(removeQueryStopwords(query)))[:5]
+        except ValueError:
+            result = "invalid input"
+
+        self.SearchByTitleOutput.configure(text=result)
+
+
+#give top 5 results
+    def searchByTitleButton (self):
+        query = str(self.entry.get())
+        try:
+            result = getMaxTitleCosSim(getAdvancedQuery(removeQueryStopwords(query)))[:5]
+        except ValueError:
+            result = "invalid input"
+
+        self.SearchByTitleOutput.configure(text=result)
+
 
     def searchArtistButton(self):
         # get the value from the input widget, convert
         # it to an int, and do a calculation
         try:
-            i = str(self.artistEntry.get())
+            i = str(self.entry.get())
             result = "Your query is: %s \n TF: %s" % (i, getArtistTF(i))
         except ValueError:
             result = "Please enter string only"
-
         # set the output widget to have our result
         self.artistOutput.configure(text=result)
 
@@ -392,8 +435,6 @@ class Window(tk.Frame):
         try:
             i = str(self.entry.get())
             result = "Your query is: %s \n Filtered query is: %s \n Advanced query is: %s" % (i, removeQueryStopwords(i), getAdvancedQuery(removeQueryStopwords(i)))
-
-
         except ValueError:
             result = "Please enter string only"
 
