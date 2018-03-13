@@ -161,20 +161,6 @@ def getSynonym(term):
     return lst
 
 
-def testRun():
-    global totalCol
-    print(df.at[0, "artist.name"])
-    print(tf)
-    print(totalCol)
-    # GroupArtistMbtags()
-    a = sorted("artist.name")
-    getArtistTF('Casual')
-    print("Casual TF: ", getArtistTF("Casual"))
-    print("Casual idf: ", getIdf(getArtistTF("Casual")))
-    tfidf(getArtistTF('Casual'), getIdf(getArtistTF("Casual")))
-
-
-
 
 def getAdvancedQuery(query):
     advancedQuery = []
@@ -186,8 +172,23 @@ def getAdvancedQuery(query):
     return " ".join(advancedQuery)
 
 
+
+
+def getAllArtist ():
+    artistLst = []
+    for i in df['artist.name']:
+        artistLst.append(i)
+    return artistLst
+
+def getAllTitle ():
+    titleLst = []
+    for i in df['title']:
+        titleLst.append(i)
+    return titleLst
+
+
 #return a list of cosine similarity value of all review data and query
-def getMaxCosSim(query):
+def getMaxReviewCosSim(query):
     scores = []
     for target in reviewData:
         record = {'id': str(target.keys())[12:-3], 'cosSim': getCosin(str(target.values()), query)}
@@ -195,8 +196,36 @@ def getMaxCosSim(query):
     # print(scores)
     return scores
 
+##return a list of dicts with key=title name, value = cosin similarity
+def getMaxTitleCosSim(query):
+    scores = []
+    for target in getAllTitle():
+        record = {'Title': target, 'cosSim': getCosin(target, query)}
+        scores.append(dict(record))
+    # print(scores)
+    scores = sorted(scores, key=itemgetter('cosSim'))
+    scores.reverse()
+    return scores
+
+
+
+##return a list of dicts with key=title name, value = cosin similarity
+def getMaxArtistCosSim(query):
+    scores = []
+    for target in getAllArtist():
+        record = {'ArtistName': target, 'cosSim': getCosin(target, query)}
+        scores.append(dict(record))
+    # print(scores)
+    scores = sorted(scores, key=itemgetter('cosSim'))
+    scores.reverse()
+    return scores
+
+
+
+
+
 #groupby the getMaxCossim result by music ID, and get the average similarity score
-def rankingResult(iniResult):
+def rankingResult2(iniResult):
     lst = []
     rankingLst = []
     iniResult = sorted(iniResult, key=itemgetter('id'))
@@ -211,6 +240,21 @@ def rankingResult(iniResult):
     print("length rangking list: ", str(len(rankingLst)))
     return rankingLst
 
+
+def rankingResult(iniResult):
+    lst = []
+    rankingLst = []
+    iniResult = sorted(iniResult, key=itemgetter('id'))
+    for key, value in itertools.groupby(iniResult, key=itemgetter('id')):
+        for i in value:
+            lst.append(i.get('cosSim'))
+        avgscore = float(sum(lst)/len(lst))
+        rankingLst.append([key, avgscore])
+    rankingLst = sorted(rankingLst, key=itemgetter(1))
+    rankingLst.reverse()
+    print(rankingLst)
+    print("length rangking list: ", str(len(rankingLst)))
+    return rankingLst
 
  # remove the stop words
 def removeQueryStopwords(query):
@@ -255,12 +299,14 @@ def testRun():
     #rankingResult(getMaxCosSim(getAdvancedQuery(removeQueryStopwords("what is the most popular song by kanye west"))))
     #rankingResult(getMaxCosSim("what is the most popular song by kanye west"))
     #query = "happy glad funny"
-    query = "country song beautiful lyric"
+    query = "Casual"
     print("Query: ", query)
     print("Removed stop words query: ", removeQueryStopwords(query))
     print("Advanced stop words query: ", getAdvancedQuery(removeQueryStopwords(query)))
-    #rankingResult(getMaxCosSim(query))
-    #rankingResult(getMaxCosSim(getAdvancedQuery(removeQueryStopwords(query))))
+    print(getMaxTitleCosSim(getAdvancedQuery(removeQueryStopwords(query))))
+    print(getMaxArtistCosSim(getAdvancedQuery(removeQueryStopwords(query))))
+    rankingResult(getMaxReviewCosSim(getAdvancedQuery(removeQueryStopwords(query))))
+
 
     return
 
