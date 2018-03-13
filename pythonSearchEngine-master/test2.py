@@ -1,5 +1,6 @@
 #! -*- coding:utf-8 -*-
 import sys
+import math
 import json
 import numpy
 from PyDictionary import PyDictionary
@@ -27,7 +28,7 @@ df = pd.read_csv("testexcel.csv")
 #f = open("testexcel.csv", "r")
 tf = 0
 idf = 0
-totalCol = df.shape[0]
+totalCol = df.shape[0]-1
 allRec = []
 WORD = re.compile(r'\w+')
 dictionary = PyDictionary()
@@ -41,8 +42,6 @@ with open('reviews_Digital_Music_5.json') as f:
         record = {json.loads(line)['asin'] : json.loads(line)['reviewText']}
         reviewData.append(dict(record))
 # print(reviewData)
-
-
 
 #convert text to vectors
 def text2Vector(text):
@@ -104,12 +103,13 @@ def getRecordByArtistName(artistName):
 
 
 
-def tfidf(term):
-    global tf
-    count = 0
-    df.loc[df['title'] == term]
-    print("searching {} words".format(count))
-    print("found target {} times".format(tf))
+def tfidf(tf, idf):
+    # print("searching {} words".format(count))
+    # print("found target {} times".format(tf))
+    tfidf = tf*idf
+    print("tfidf is: ", str(tfidf))
+    return tfidf
+
 
 # grouy by mbtags, get number of mbtags and number of artist/ group by keys
 def GroupArtistMbtags():
@@ -130,11 +130,19 @@ def getArtistTF(ArtistName):
     print(tf)
     return tf
 
+
+def getIdf(tfk):
+    # print("totalCol: ", totalCol)
+    # print("tfk: ", tfk)
+    return math.log((totalCol/tfk), 2)
+
+
  ##return TF
 def getAllTF(term):
     tf = getLST().count(str(term))
     print("term '{}' occurred {} times in the file".format(term, tf))
     return tf
+
 
  # return any tf under specific column
 def getSpecificTF(header, term):
@@ -151,6 +159,21 @@ def getSynonym(term):
     for item in dictionary.synonym(str(term)):
         lst.append(item)
     return lst
+
+
+def testRun():
+    global totalCol
+    print(df.at[0, "artist.name"])
+    print(tf)
+    print(totalCol)
+    # GroupArtistMbtags()
+    a = sorted("artist.name")
+    getArtistTF('Casual')
+    print("Casual TF: ", getArtistTF("Casual"))
+    print("Casual idf: ", getIdf(getArtistTF("Casual")))
+    tfidf(getArtistTF('Casual'), getIdf(getArtistTF("Casual")))
+
+
 
 
 def getAdvancedQuery(query):
@@ -209,6 +232,10 @@ def removeQueryStopwords(query):
     return filteredQuery
 
 
+###User Obj
+#
+
+
 def testRun():
     ##########
     # print(totalCol)
@@ -228,14 +255,15 @@ def testRun():
     #rankingResult(getMaxCosSim(getAdvancedQuery(removeQueryStopwords("what is the most popular song by kanye west"))))
     #rankingResult(getMaxCosSim("what is the most popular song by kanye west"))
     #query = "happy glad funny"
-    query = "dirty rap"
+    query = "country song beautiful lyric"
     print("Query: ", query)
     print("Removed stop words query: ", removeQueryStopwords(query))
     print("Advanced stop words query: ", getAdvancedQuery(removeQueryStopwords(query)))
-    rankingResult(getMaxCosSim(query))
-    rankingResult(getMaxCosSim(getAdvancedQuery(removeQueryStopwords(query))))
+    #rankingResult(getMaxCosSim(query))
+    #rankingResult(getMaxCosSim(getAdvancedQuery(removeQueryStopwords(query))))
 
     return
+
 
 
 
@@ -337,4 +365,3 @@ if __name__ == "__main__":
     Window(root).pack(fill="both", expand=True)
     # uncommon below to run the window
     #root.mainloop()
-
