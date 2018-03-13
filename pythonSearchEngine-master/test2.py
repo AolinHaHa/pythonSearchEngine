@@ -376,9 +376,6 @@ def testRun():
     # for item in rankingResult(getMaxReviewCosSim(getAdvancedQuery(removeQueryStopwords(query))))[:5]:
     #     AsinList.append(item[0])
     # print(ReadAsin(AsinList))
-
-
-
     return
 
 
