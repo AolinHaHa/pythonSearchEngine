@@ -7,20 +7,31 @@ from PyDictionary import PyDictionary
 import itertools
 from operator import itemgetter
 from pprint import pprint
-try:
-    # for Python2
-    import Tkinter as tk  ## notice capitalized T in Tkinter
-except ImportError:
-    # for Python3
-    import tkinter as tk  ## notice lowercase 't' in tkinter here
 import pandas as pd
 import imp
-from tkinter import *
 from scipy import spatial
 import re, math
 from collections import Counter
 import warnings
-import scrapy
+#from crawler import Crawler
+
+try:
+    # for Python2
+    import Tkinter as tk  ## notice capitalized T in Tkinter
+    from Tkinter import *
+except ImportError:
+    # for Python3
+    import tkinter as tk  ## notice lowercase 't' in tkinter here
+    from tkinter import *
+
+#######
+from lxml import html
+import csv, os, json
+import requests
+#from exceptions import ValueError
+from time import sleep
+
+
 
 #import the_module_that_warns
 warnings.simplefilter("ignore", UserWarning)
@@ -277,6 +288,65 @@ def removeQueryStopwords(query):
     # print(filteredQuery)
     return filteredQuery
 
+AsinList=[]
+
+
+def AmzonParser(url):
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.90 Safari/537.36'}
+    page = requests.get(url, headers=headers)
+    while True:
+        sleep(3)
+        try:
+            doc = html.fromstring(page.content)
+            XPATH_NAME = '//h1[@id="title"]//text()'
+            XPATH_SALE_PRICE = '//span[contains(@id,"ourprice") or contains(@id,"saleprice")]/text()'
+            XPATH_ORIGINAL_PRICE = '//td[contains(text(),"List Price") or contains(text(),"M.R.P") or contains(text(),"Price")]/following-sibling::td/text()'
+            XPATH_CATEGORY = '//a[@class="a-link-normal a-color-tertiary"]//text()'
+            XPATH_AVAILABILITY = '//div[@id="availability"]//text()'
+
+            RAW_NAME = doc.xpath(XPATH_NAME)
+            RAW_SALE_PRICE = doc.xpath(XPATH_SALE_PRICE)
+            RAW_CATEGORY = doc.xpath(XPATH_CATEGORY)
+            RAW_ORIGINAL_PRICE = doc.xpath(XPATH_ORIGINAL_PRICE)
+            RAw_AVAILABILITY = doc.xpath(XPATH_AVAILABILITY)
+
+            NAME = ' '.join(''.join(RAW_NAME).split()) if RAW_NAME else None
+            SALE_PRICE = ' '.join(''.join(RAW_SALE_PRICE).split()).strip() if RAW_SALE_PRICE else None
+            CATEGORY = ' > '.join([i.strip() for i in RAW_CATEGORY]) if RAW_CATEGORY else None
+            ORIGINAL_PRICE = ''.join(RAW_ORIGINAL_PRICE).strip() if RAW_ORIGINAL_PRICE else None
+            AVAILABILITY = ''.join(RAw_AVAILABILITY).strip() if RAw_AVAILABILITY else None
+
+            if not ORIGINAL_PRICE:
+                ORIGINAL_PRICE = SALE_PRICE
+
+            if page.status_code != 200:
+                raise ValueError('captha')
+            data = {
+                'NAME': NAME,
+                'SALE_PRICE': SALE_PRICE,
+                'CATEGORY': CATEGORY,
+                'ORIGINAL_PRICE': ORIGINAL_PRICE,
+                'AVAILABILITY': AVAILABILITY,
+                'URL': url,
+            }
+            print(data['NAME'])
+            return data['NAME']
+        except Exception as e:
+            print(e)
+
+
+def ReadAsin(AsinList):
+    extracted_data = []
+    for i in AsinList:
+        url = "http://www.amazon.com/dp/" + i
+        print("Processing: " + url)
+        extracted_data.append(AmzonParser(url))
+        sleep(5)
+    return extracted_data
+    # f = open('data.json', 'w')
+    #  json.dump(extracted_data, f, indent=4)
+
 
 def testRun():
     ##########
@@ -303,8 +373,10 @@ def testRun():
     print("Advanced stop words query: ", getAdvancedQuery(removeQueryStopwords(query)))
     #print(getMaxTitleCosSim(getAdvancedQuery(removeQueryStopwords(query))))
     #print(getMaxArtistCosSim(getAdvancedQuery(removeQueryStopwords(query))))
-    for item in rankingResult(getMaxReviewCosSim(getAdvancedQuery(removeQueryStopwords(query))))[:5]:
-        print (item[0])
+    # for item in rankingResult(getMaxReviewCosSim(getAdvancedQuery(removeQueryStopwords(query))))[:5]:
+    #     AsinList.append(item[0])
+    # print(ReadAsin(AsinList))
+
 
 
     return
@@ -390,7 +462,9 @@ class Window(tk.Frame):
     def SearchByReviewButton(self):
         query = str(self.entry.get())
         try:
-            result = rankingResult(getMaxReviewCosSim(getAdvancedQuery(removeQueryStopwords(query))))[:5]
+            for item in rankingResult(getMaxReviewCosSim(getAdvancedQuery(removeQueryStopwords(query))))[:5]:
+                AsinList.append(item[0])
+                result = ReadAsin(AsinList)
         except ValueError:
             result = "invalid input"
         self.SearchByTitleOutput.configure(text=result)
@@ -451,4 +525,5 @@ if __name__ == "__main__":
     root = tk.Tk()
     Window(root).pack(fill="both", expand=True)
     # uncommon below to run the window
-    #root.mainloop()
+    root.mainloop()
+    #ReadAsin()
