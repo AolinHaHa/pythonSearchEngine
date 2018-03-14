@@ -58,9 +58,12 @@ with open('reviews_Digital_Music_5.json') as f:
 
 # print(reviewData)
 
+
 # convert text to vectors
 def text2Vector(text):
-    words = WORD.findall(text)
+    words = WORD.findall(re.sub("[^a-zA-Z]",  # Search for all non-letters
+                          " ",          # Replace all non-letters with spaces
+                          str(text)))
     return Counter(words)
 
 
@@ -153,7 +156,10 @@ def getArtistTF(ArtistName):
 def getIdf(tfk):
     # print("totalCol: ", totalCol)
     # print("tfk: ", tfk)
-    return math.log((totalCol / tfk), 2)
+    try:
+        return math.log((totalCol / tfk), 2)
+    except ZeroDivisionError:
+        return 0
 
 
 ##return TF
@@ -236,6 +242,7 @@ def getMaxArtistCosSim(query):
     # print(scores)
     scores = sorted(scores, key=itemgetter('cosSim'))
     scores.reverse()
+    print(scores)
     return scores
 
 
@@ -418,8 +425,8 @@ class Window(tk.Frame):
         self.SearchByArtistName.pack(side="top", fill='both', expand=True, padx=10, pady=10)
 
         self.SearchByReview = tk.Button(self, text="Search By Review", command=self.SearchByReviewButton)
-        self.SearchByArtistNameOutput = tk.Label(self, text="Search By Review Label", wraplength=300, justify=LEFT)
-        self.SearchByArtistNameOutput.pack(side="top", fill="x", padx=300, expand=True)
+        self.SearchByReviewOutput = tk.Label(self, text="Search By Review Label", wraplength=300, justify=LEFT)
+        self.SearchByReviewOutput.pack(side="top", fill="x", padx=300, expand=True)
         self.SearchByReview.pack(side="top", fill='both', expand=True, padx=11, pady=11)
 
         var = StringVar(self)
@@ -448,7 +455,7 @@ class Window(tk.Frame):
             result = ReadAsin(AsinList)
         except ValueError:
             result = "invalid input"
-        self.SearchByTitleOutput.configure(text=result)
+        self.SearchByReviewOutput.configure(text=result)
 
     # give top 5 results
     def searchByArtistNameButton(self):
