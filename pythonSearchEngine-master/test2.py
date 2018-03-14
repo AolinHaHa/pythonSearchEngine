@@ -1,55 +1,70 @@
 #! -*- coding:utf-8 -*-
 import sys
+import math
 import json
 import numpy
 from PyDictionary import PyDictionary
 import itertools
 from operator import itemgetter
 from pprint import pprint
-try:
-    # for Python2
-    import Tkinter as tk  ## notice capitalized T in Tkinter
-except ImportError:
-    # for Python3
-    import tkinter as tk  ## notice lowercase 't' in tkinter here
 import pandas as pd
 import imp
 from scipy import spatial
 import re, math
 from collections import Counter
 import warnings
-#import the_module_that_warns
+
+# from crawler import Crawler
+
+try:
+    # for Python2
+    import Tkinter as tk  ## notice capitalized T in Tkinter
+    from Tkinter import *
+except ImportError:
+    # for Python3
+    import tkinter as tk  ## notice lowercase 't' in tkinter here
+    from tkinter import *
+
+#######
+from lxml import html
+import csv, os, json
+import requests
+# from exceptions import ValueError
+from time import sleep
+
+# import the_module_that_warns
 warnings.simplefilter("ignore", UserWarning)
 imp.reload(sys)
 # Load csv
-df = pd.read_csv("testexcel.csv")
+df = pd.read_csv("music.csv")
 # df = pd.read_csv("music.csv")
-#f = open("testexcel.csv", "r")
+# f = open("testexcel.csv", "r")
 tf = 0
 idf = 0
-totalCol = df.shape[0]
+totalCol = df.shape[0] - 1
 allRec = []
 WORD = re.compile(r'\w+')
 dictionary = PyDictionary()
 
-#load music review data, store into dictionary data type
+# load music review data, store into dictionary data type
 reviewData = []
-#with open('test_music.json') as f:
+# with open('test_music.json') as f:
 with open('reviews_Digital_Music_5.json') as f:
     for line in f:
-        #reviewData.append(json.loads(line)['reviewText'])
-        record = {json.loads(line)['asin'] : json.loads(line)['reviewText']}
+        # reviewData.append(json.loads(line)['reviewText'])
+        record = {json.loads(line)['asin']: json.loads(line)['reviewText']}
         reviewData.append(dict(record))
-print(reviewData)
 
 
+# print(reviewData)
 
-#convert text to vectors
+# convert text to vectors
 def text2Vector(text):
     words = WORD.findall(text)
     return Counter(words)
 
-#return cosin similarity for strings
+
+# return cosin similarity for strings
 def getCosin(text1, text2):
     vec1 = text2Vector(text1)
     vec2 = text2Vector(text2)
@@ -66,6 +81,7 @@ def getCosin(text1, text2):
         return float(numerator) / denominator
 
 
+# find everything in dataframe
 def getLST():
     masterlst = []
     for header in df:
@@ -103,13 +119,14 @@ def getRecordByArtistName(artistName):
     return df.loc[df['artist.name'] == artistName]
 
 
+# returtn tfidf
+def tfidf(tf, idf):
+    # print("searching {} words".format(count))
+    # print("found target {} times".format(tf))
+    tfidf = tf * idf
+    print("tfidf is: ", str(tfidf))
+    return tfidf
 
-def tfidf(term):
-    global tf
-    count = 0
-    df.loc[df['title'] == term]
-    print("searching {} words".format(count))
-    print("found target {} times".format(tf))
 
 # grouy by mbtags, get number of mbtags and number of artist/ group by keys
 def GroupArtistMbtags():
@@ -121,7 +138,8 @@ def GroupArtistMbtags():
         lst.append(item)
     print(lst)
 
- ##return artist term frequency
+
+##return artist term frequency
 def getArtistTF(ArtistName):
     tf = 0
     for i in df['artist.name'] == ArtistName:
@@ -130,13 +148,22 @@ def getArtistTF(ArtistName):
     print(tf)
     return tf
 
- ##return TF
+
+# return idf
+def getIdf(tfk):
+    # print("totalCol: ", totalCol)
+    # print("tfk: ", tfk)
+    return math.log((totalCol / tfk), 2)
+
+
+##return TF
 def getAllTF(term):
     tf = getLST().count(str(term))
     print("term '{}' occurred {} times in the file".format(term, tf))
     return tf
 
- # return any tf under specific column
+
+# return any tf under specific column
 def getSpecificTF(header, term):
     tf = 0
     for item in df[header]:
@@ -144,7 +171,8 @@ def getSpecificTF(header, term):
             tf += 1
     return tf
 
-#return a list of synonymn words
+
+# return a list of synonymn words
 def getSynonym(term):
     lst = []
     lst.append(str(term))
@@ -163,8 +191,22 @@ def getAdvancedQuery(query):
     return " ".join(advancedQuery)
 
 
-#return a list of cosine similarity value of all review data and query
-def getMaxCosSim(query):
+def getAllArtist():
+    artistLst = []
+    for i in df['artist.name']:
+        artistLst.append(i)
+    return artistLst
+
+
+def getAllTitle():
+    titleLst = []
+    for i in df['title']:
+        titleLst.append(i)
+    return titleLst
+
+
+# return a list of cosine similarity value of all review data and query
+def getMaxReviewCosSim(query):
     scores = []
     for target in reviewData:
         record = {'id': str(target.keys())[12:-3], 'cosSim': getCosin(str(target.values()), query)}
@@ -172,7 +214,32 @@ def getMaxCosSim(query):
     # print(scores)
     return scores
 
-#groupby the getMaxCossim result by music ID, and get the average similarity score
+
+##return a list of dicts with key=title name, value = cosin similarity
+def getMaxTitleCosSim(query):
+    scores = []
+    for target in getAllTitle():
+        record = {'Title': target, 'cosSim': getCosin(target, query)}
+        scores.append(dict(record))
+    # print(scores)
+    scores = sorted(scores, key=itemgetter('cosSim'))
+    scores.reverse()
+    return scores
+
+
+##return a list of dicts with key=title name, value = cosin similarity
+def getMaxArtistCosSim(query):
+    scores = []
+    for target in getAllArtist():
+        record = {'ArtistName': target, 'cosSim': getCosin(target, query)}
+        scores.append(dict(record))
+    # print(scores)
+    scores = sorted(scores, key=itemgetter('cosSim'))
+    scores.reverse()
+    return scores
+
+
+# groupby the getMaxCossim result by music ID, and get the average similarity score
 def rankingResult(iniResult):
     lst = []
     rankingLst = []
@@ -180,16 +247,17 @@ def rankingResult(iniResult):
     for key, value in itertools.groupby(iniResult, key=itemgetter('id')):
         for i in value:
             lst.append(i.get('cosSim'))
-        avgscore = float(sum(lst)/len(lst))
+        avgscore = float(sum(lst) / len(lst))
         rankingLst.append([key, avgscore])
     rankingLst = sorted(rankingLst, key=itemgetter(1))
     rankingLst.reverse()
     print(rankingLst)
     print("length rangking list: ", str(len(rankingLst)))
+
     return rankingLst
 
 
- # remove the stop words
+# remove the stop words
 def removeQueryStopwords(query):
     stopwords = ["I", "a", "about", "above", "after", "again", "against", "all", "am", "an", "and", "any", "are", "as",
                  "at", "be", "because", "been", "before", "being", "below", "between", "both", "but", "by", "could",
@@ -209,6 +277,82 @@ def removeQueryStopwords(query):
     return filteredQuery
 
 
+AsinList = []
+SongNames = []
+
+
+def AmzonParser(url):
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.90 Safari/537.36'}
+    page = requests.get(url, headers=headers)
+    while True:
+        sleep(3)
+        try:
+            doc = html.fromstring(page.content)
+            XPATH_NAME = '//h1[@id="title"]//text()'
+            XPATH_SALE_PRICE = '//span[contains(@id,"ourprice") or contains(@id,"saleprice")]/text()'
+            XPATH_ORIGINAL_PRICE = '//td[contains(text(),"List Price") or contains(text(),"M.R.P") or contains(text(),"Price")]/following-sibling::td/text()'
+            XPATH_CATEGORY = '//a[@class="a-link-normal a-color-tertiary"]//text()'
+            XPATH_AVAILABILITY = '//div[@id="availability"]//text()'
+
+            RAW_NAME = doc.xpath(XPATH_NAME)
+            RAW_SALE_PRICE = doc.xpath(XPATH_SALE_PRICE)
+            RAW_CATEGORY = doc.xpath(XPATH_CATEGORY)
+            RAW_ORIGINAL_PRICE = doc.xpath(XPATH_ORIGINAL_PRICE)
+            RAw_AVAILABILITY = doc.xpath(XPATH_AVAILABILITY)
+
+            NAME = ' '.join(''.join(RAW_NAME).split()) if RAW_NAME else None
+            SALE_PRICE = ' '.join(''.join(RAW_SALE_PRICE).split()).strip() if RAW_SALE_PRICE else None
+            CATEGORY = ' > '.join([i.strip() for i in RAW_CATEGORY]) if RAW_CATEGORY else None
+            ORIGINAL_PRICE = ''.join(RAW_ORIGINAL_PRICE).strip() if RAW_ORIGINAL_PRICE else None
+            AVAILABILITY = ''.join(RAw_AVAILABILITY).strip() if RAw_AVAILABILITY else None
+
+            if not ORIGINAL_PRICE:
+                ORIGINAL_PRICE = SALE_PRICE
+
+            if page.status_code != 200:
+                raise ValueError('captha')
+            data = {
+                'NAME': NAME,
+                'SALE_PRICE': SALE_PRICE,
+                'CATEGORY': CATEGORY,
+                'ORIGINAL_PRICE': ORIGINAL_PRICE,
+                'AVAILABILITY': AVAILABILITY,
+                'URL': url,
+            }
+            print(data['NAME'])
+            SongNames.append(data['NAME'])
+            return data['NAME']
+        except Exception as e:
+            print(e)
+
+
+def ReadAsin(AsinList):
+    extracted_data = []
+    for i in AsinList:
+        url = "http://www.amazon.com/dp/" + i
+        print("URL: " + url)
+        extracted_data.append(AmzonParser(url))
+        sleep(5)
+    return extracted_data
+    # f = open('data.json', 'w')
+    #  json.dump(extracted_data, f, indent=4)
+
+
+savedSongName = []
+
+
+def savingSongName(songName):
+    savedSongName.append(songName)
+    f = open('savedPerferencingSong.json', 'w')
+    json.dump(savedSongName, f, indent=4)
+
+
+def ClearSongNames():
+    global savedSongName
+    savedSongName = []
+
+
 def testRun():
     ##########
     # print(totalCol)
@@ -219,96 +363,124 @@ def testRun():
     # dataSetI = [3, 45, 7, 2]
     # dataSetII = [2, 54, 13, 15]
     # print(getCossinSim(dataSetI,dataSetII))
-    # print(getAllTF("ccm"))
+    # tfidf(getAllTF("ccm"),getIdf(getAllTF("ccm")))
     # print('Cosine:', getCosin(getAdvancedQuery("interesting music"), reviewData[1]))
     # print(getSynonym("popular"))
-    #print(getAdvancedQuery("interesting music"))
-    #getMaxCosSim(getAdvancedQuery("interesting music"))
-    #rankingResult(getMaxCosSim(getAdvancedQuery("dirty rap")))
-    #rankingResult(getMaxCosSim(getAdvancedQuery(removeQueryStopwords("what is the most popular song by kanye west"))))
-    #rankingResult(getMaxCosSim("what is the most popular song by kanye west"))
-    #query = "happy glad funny"
-    query = "dirty rap"
+    # print(getAdvancedQuery("interesting music"))
+    # getMaxCosSim(getAdvancedQuery("interesting music"))
+    # rankingResult(getMaxCosSim(getAdvancedQuery("dirty rap")))
+    # rankingResult(getMaxCosSim(getAdvancedQuery(removeQueryStopwords("what is the most popular song by kanye west"))))
+    # rankingResult(getMaxCosSim("what is the most popular song by kanye west"))
+    # query = "happy glad funny"
+    query = "money savage bad rap"
     print("Query: ", query)
-    print("Removed stop words query: ", removeQueryStopwords(query))
-    print("Advanced stop words query: ", getAdvancedQuery(removeQueryStopwords(query)))
-    rankingResult(getMaxCosSim(query))
-    rankingResult(getMaxCosSim(getAdvancedQuery(removeQueryStopwords(query))))
-
+    # print("Removed stop words query: ", removeQueryStopwords(query))
+    # print("Advanced stop words query: ", getAdvancedQuery(removeQueryStopwords(query)))
+    # print(getMaxTitleCosSim(getAdvancedQuery(removeQueryStopwords(query))))
+    # print(getMaxArtistCosSim(getAdvancedQuery(removeQueryStopwords(query))))
+    # for item in rankingResult(getMaxReviewCosSim(getAdvancedQuery(removeQueryStopwords(query))))[:5]:
+    #     AsinList.append(item[0])
+    # print(ReadAsin(AsinList))
     return
 
-
-
-
-# class User(object):
-#
-#     def __init__(self,user_id):
-#       if user_id == -1:
-
-#           self.new_user = True
-#       else:
-#           self.new_user = False
-#
-#           #fetch all records from db about user_id
-#           self._populateUser()
-#
-#     def commit(self):
-#         if self.new_user:
-#             #Do INSERTs
-#         else:
-#             #Do UPDATEs
-#
-#     def delete(self):
-#         if self.new_user == False:
-#             return False
-#
-#         #Delete user code here
-#
-#     def _populate(self):
-#         #Query self.user_id from database and
-#         #set all instance variables, e.g.
-#         #self.name = row['name']
-#
-#     def getFullName(self):
-#         return self.name
 
 
 class Window(tk.Frame):
     def __init__(self, parent):
         tk.Frame.__init__(self, parent)
-
         # create a prompt, an input box, an output label,
         # and a button to do the computation
         self.prompt = tk.Label(self, text="Search Query:", anchor="w")
         self.entry = tk.Entry(self)
-        self.submit = tk.Button(self, text="Search Query", command=self.searchButton)
+        self.submit = tk.Button(self, text="Get Advanced Query", command=self.searchButton)
         self.output = tk.Label(self, text="Def Label")
 
-        self.artistName = tk.Label(self, text="Search artist name:", anchor="w")
-        self.artistEntry = tk.Entry(self)
-        self.artistSubmit = tk.Button(self, text="Search Artist", command=self.searchArtistButton)
-        self.artistOutput = tk.Label(self, text="Def Label")
+        self.artistSubmit = tk.Button(self, text="Search Term Frequency", command=self.searchArtistButton)
+        self.artistOutput = tk.Label(self, text="TF Label")
 
         # lay the widgets out on the screen.
         self.prompt.pack(side="top", fill="x")
         self.entry.pack(side="top", fill="x", padx=200)
         self.output.pack(side="top", fill="x", expand=True)
-        self.submit.pack(side="right")
+        self.submit.pack(side="top", fill='both', expand=True, padx=4, pady=4)
 
-        self.artistName.pack(side="top", fill="x")
-        self.artistEntry.pack(side="top", fill="x", padx=300)
         self.artistOutput.pack(side="top", fill="x", padx=300, expand=True)
-        self.artistSubmit.pack(side="right")
+        self.artistSubmit.pack(side="top", fill='both', expand=True, padx=6, pady=6)
+
+        self.SearchByTitle = tk.Button(self, text="Search By Title", command=self.searchByTitleButton)
+        self.SearchByTitleOutput = tk.Label(self, text="Search By Title Label", wraplength=300, justify=LEFT)
+        self.SearchByTitleOutput.pack(side="top", fill="x", padx=300, expand=True)
+        self.SearchByTitle.pack(side="top", fill='both', expand=True, padx=8, pady=8)
+
+        self.SearchByArtistName = tk.Button(self, text="Search By Artist Name", command=self.searchByArtistNameButton)
+        self.SearchByArtistNameOutput = tk.Label(self, text="Search By Artist Name Label", wraplength=300, justify=LEFT)
+        self.SearchByArtistNameOutput.pack(side="top", fill="x", padx=300, expand=True)
+        self.SearchByArtistName.pack(side="top", fill='both', expand=True, padx=10, pady=10)
+
+        self.SearchByReview = tk.Button(self, text="Search By Review", command=self.SearchByReviewButton)
+        self.SearchByArtistNameOutput = tk.Label(self, text="Search By Review Label", wraplength=300, justify=LEFT)
+        self.SearchByArtistNameOutput.pack(side="top", fill="x", padx=300, expand=True)
+        self.SearchByReview.pack(side="top", fill='both', expand=True, padx=11, pady=11)
+
+        var = StringVar(self)
+        var.set("Song Name Index")  # initial value
+        option = OptionMenu(self, var, "Song Name", "1", "2", "3", "4", "5", "None of them")
+        option.pack()
+
+        def ok():
+            print("index is", var.get())
+            try:
+                savingSongName(SongNames[int(var.get()) - 1])
+                print("saved songs: ", savedSongName)
+            except ValueError:
+                savingSongName("None_Result_Found")
+                print("Selected None")
+
+        button = Button(self, text="OK", command=ok)
+        button.pack()
+
+    # give top 5 results
+    def SearchByReviewButton(self):
+        query = str(self.entry.get())
+        try:
+            for item in rankingResult(getMaxReviewCosSim(getAdvancedQuery(removeQueryStopwords(query))))[:5]:
+                AsinList.append(item[0])
+            result = ReadAsin(AsinList)
+        except ValueError:
+            result = "invalid input"
+        self.SearchByTitleOutput.configure(text=result)
+
+    # give top 5 results
+    def searchByArtistNameButton(self):
+        query = str(self.entry.get())
+        try:
+            result = getMaxArtistCosSim(getAdvancedQuery(removeQueryStopwords(query)))[:5]
+        except ValueError:
+            result = "invalid input"
+
+        self.SearchByTitleOutput.configure(text=result)
+
+    # give top 5 results
+    def searchByTitleButton(self):
+        query = str(self.entry.get())
+        try:
+            result = getMaxTitleCosSim(getAdvancedQuery(removeQueryStopwords(query)))[:5]
+        except ValueError:
+            result = "invalid input"
+
+        self.SearchByTitleOutput.configure(text=result)
 
     def searchArtistButton(self):
         # get the value from the input widget, convert
         # it to an int, and do a calculation
         try:
-            i = str(self.artistEntry.get())
-            result = "Your query is: %s \n TF: %s" % (i, getArtistTF(i))
+            i = str(self.entry.get())
+            a = getAllTF(i)
+            b = getIdf(getAllTF(i))
+            c = tfidf(a, b)
+            result = "Your query is: %s \n TF: %s , IDF: %s, TFIDF: %s" % (i, a, b, c)
         except ValueError:
             result = "Please enter string only"
-
         # set the output widget to have our result
         self.artistOutput.configure(text=result)
 
@@ -317,9 +489,8 @@ class Window(tk.Frame):
         # it to an int, and do a calculation
         try:
             i = str(self.entry.get())
-            result = "Your query is: %s \n Filtered query is: %s \n Advanced query is: %s" % (i, removeQueryStopwords(i), getAdvancedQuery(removeQueryStopwords(i)))
-
-
+            result = "Your query is: %s \n Filtered query is: %s \n Advanced query is: %s" % (
+            i, removeQueryStopwords(i), getAdvancedQuery(removeQueryStopwords(i)))
         except ValueError:
             result = "Please enter string only"
 
@@ -336,5 +507,5 @@ if __name__ == "__main__":
     root = tk.Tk()
     Window(root).pack(fill="both", expand=True)
     # uncommon below to run the window
-    #root.mainloop()
-
+    root.mainloop()
+    # ReadAsin()
