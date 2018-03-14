@@ -59,9 +59,9 @@ _warnings_
 
 `getIdf` - return IDF by passing any particular term
 
-`tfidf` - return TFIDF by pasing TF and IDF
+`tfidf` - return TFIDF by passing TF and IDF
 
-`getSynonym` - return a list of synonymn words
+`getSynonym` - return a list of synonym words
 
 `getAdvancedQuery` - return a advanced query with stop words removed and synonyms added
 
@@ -96,5 +96,4 @@ _warnings_
 
 
 ## Questions feedbacks?
-- 微博：[@马克飞象](<aolin.yang315@gmail.com>)，[@GGock](http://weibo.com/ggock "开发者个人账号")
 - Email：<aolin.yang315@gmail.com>, 
