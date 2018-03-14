@@ -1,21 +1,17 @@
 #! -*- coding:utf-8 -*-
 import sys
-import math
-import json
-import numpy
 from PyDictionary import PyDictionary
 import itertools
 from operator import itemgetter
-from pprint import pprint
 import pandas as pd
 import imp
 from scipy import spatial
-import re, math
+import re, math, json
 from collections import Counter
+from lxml import html
+import requests
+from time import sleep
 import warnings
-
-# from crawler import Crawler
-
 try:
     # for Python2
     import Tkinter as tk  ## notice capitalized T in Tkinter
@@ -25,12 +21,6 @@ except ImportError:
     import tkinter as tk  ## notice lowercase 't' in tkinter here
     from tkinter import *
 
-#######
-from lxml import html
-import csv, os, json
-import requests
-# from exceptions import ValueError
-from time import sleep
 
 # import the_module_that_warns
 warnings.simplefilter("ignore", UserWarning)
