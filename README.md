@@ -20,9 +20,14 @@ _warnings_
 
 
 ##Data Set
-**music.csv**
+- **music.csv**
+| Artist.name     |    Title | Terms  |
+| :-------- | --------:| :--: |
+| Kanye West  | Stronger |  rap   |
+| Andy Andy     |   La Culpa |  bachata |
 
-**reviews_Digital_Music_5.json**
+
+- **reviews_Digital_Music_5.json**
 
 
 ## Key functions
