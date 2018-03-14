@@ -21,10 +21,10 @@ _warnings_
 
 ##Data Set
 - **music.csv**
-| Artist.name     |    Title | Terms  |
-| :-------- | --------:| :--: |
+| Artist.name |  Title   | Terms  |
+| :---------  | --------:|  :--:  |
 | Kanye West  | Stronger |  rap   |
-| Andy Andy     |   La Culpa |  bachata |
+| Andy Andy   | La Culpa |bachata |
 
 
 | Item      |    Value | Qty  |
