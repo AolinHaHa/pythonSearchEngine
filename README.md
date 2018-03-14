@@ -23,21 +23,18 @@ _warnings_
 - **music.csv**
 
 
-| Artist.name |  Title   | Terms  |
+| Artist.name | Title    | Terms  |
 | :---------  | --------:|  :--:  |
 | Kanye West  | Stronger |  rap   |
 | Andy Andy   | La Culpa |bachata |
 
 
-| Item      |    Value | Qty  |
-| :-------- | --------:| :--: |
-| Computer  | 1600 USD |  5   |
-| Phone     |   12 USD |  12  |
-| Pipe      |    1 USD | 234  |
-
-
-
 - **reviews_Digital_Music_5.json**
+
+| ReviewText  |    ASIN   |
+| :---------  |    :--:   |
+| "This is the third review of an irish..."  |5555991584 |
+| "Many times, AND WITH GOOD REASON, the.."  |B0000000ZW |
 
 
 ## Key functions
