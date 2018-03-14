@@ -96,5 +96,5 @@ _warnings_
 
 
 ## Questions feedbacks?
-- 微博：[@马克飞象](aolin.yang315@gmail.com)，[@GGock](http://weibo.com/ggock "开发者个人账号")
+- 微博：[@马克飞象](<aolin.yang315@gmail.com>)，[@GGock](http://weibo.com/ggock "开发者个人账号")
 - Email：<aolin.yang315@gmail.com>, 
